@@ -18,6 +18,13 @@
 - `pkg/mysql` DSN 构建与 Gorm 初始化入口
 - `pkg/redis` 地址构建、客户端初始化与最小测试
 - `deploy/mysql/001_init_schema.sql` 首批基础表初始化脚本
+- `internal/product` 商品领域模型与最小行为测试
+- `internal/cart` 购物车领域模型与最小行为测试
+- `internal/order` 订单领域模型与最小行为测试
+- `internal/product` 商品查询最小 repo/service/handler 链路与测试
+- `internal/cart` 购物车查询最小 repo/service/handler 链路与测试
+- `internal/order` 订单查询最小 repo/service/handler 链路与测试
+- 当前全量验证命令 `go test ./...` 已通过
 
 详细过程见：
 
@@ -26,3 +33,4 @@
 - `docs/process/stage-01-领域建模与实施阶段拆分.md`
 - `docs/process/stage-02-项目骨架创建.md`
 - `docs/process/stage-03-公共基础设施与数据库初始化.md`
+- `docs/process/stage-04-商品购物车订单主链路.md`
