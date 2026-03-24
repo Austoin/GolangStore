@@ -44,3 +44,16 @@ func (r MySQLRepository) GetByID(id uint64) (Product, error) {
 		Stock:       stock.Stock,
 	}, nil
 }
+
+func (r MySQLRepository) HasEnough(productID uint64, quantity int) bool {
+	var stock stockRow
+	if err := r.db.Table("product_stocks").Where("product_id = ?", productID).First(&stock).Error; err != nil {
+		return false
+	}
+
+	return stock.Stock >= quantity
+}
+
+func (r MySQLRepository) Deduct(productID uint64, quantity int) {
+	r.db.Table("product_stocks").Where("product_id = ?", productID).Update("stock", gorm.Expr("stock - ?", quantity))
+}

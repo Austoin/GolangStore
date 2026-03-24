@@ -13,7 +13,7 @@ import (
 func TestHandlerGetByOrderNo(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	repo := NewMemoryRepository([]Order{{OrderNo: "O2026003", UserID: 3, Status: StatusPending}})
-	handler := NewHandler(NewService(repo, fakeCartQuery{}))
+	handler := NewHandler(NewService(repo, fakeCartQuery{}, nil))
 
 	router := gin.New()
 	router.GET("/orders/:orderNo", handler.GetByOrderNo)
@@ -29,7 +29,7 @@ func TestHandlerGetByOrderNo(t *testing.T) {
 
 func TestHandlerGetByOrderNoNotFound(t *testing.T) {
 	gin.SetMode(gin.TestMode)
-	handler := NewHandler(NewService(NewMemoryRepository(nil), fakeCartQuery{}))
+	handler := NewHandler(NewService(NewMemoryRepository(nil), fakeCartQuery{}, nil))
 
 	router := gin.New()
 	router.GET("/orders/:orderNo", handler.GetByOrderNo)
@@ -45,7 +45,7 @@ func TestHandlerGetByOrderNoNotFound(t *testing.T) {
 
 func TestHandlerCreate(t *testing.T) {
 	gin.SetMode(gin.TestMode)
-	handler := NewHandler(NewService(NewMemoryRepository(nil), fakeCartQuery{}))
+	handler := NewHandler(NewService(NewMemoryRepository(nil), fakeCartQuery{}, nil))
 
 	router := gin.New()
 	router.POST("/orders", handler.Create)
@@ -63,7 +63,7 @@ func TestHandlerCreate(t *testing.T) {
 
 func TestHandlerCreateBadRequest(t *testing.T) {
 	gin.SetMode(gin.TestMode)
-	handler := NewHandler(NewService(NewMemoryRepository(nil), fakeCartQuery{}))
+	handler := NewHandler(NewService(NewMemoryRepository(nil), fakeCartQuery{}, nil))
 
 	router := gin.New()
 	router.POST("/orders", handler.Create)
@@ -81,7 +81,7 @@ func TestHandlerCreateBadRequest(t *testing.T) {
 
 func TestHandlerCreateFromCheckedCartItems(t *testing.T) {
 	gin.SetMode(gin.TestMode)
-	handler := NewHandler(NewService(NewMemoryRepository(nil), fakeCartQuery{items: []cart.Item{{UserID: 1, ProductID: 1, ProductName: "phone", Price: 100, Quantity: 2, Checked: true}}}))
+	handler := NewHandler(NewService(NewMemoryRepository(nil), fakeCartQuery{items: []cart.Item{{UserID: 1, ProductID: 1, ProductName: "phone", Price: 100, Quantity: 2, Checked: true}}}, nil))
 
 	router := gin.New()
 	router.POST("/orders/from-cart", handler.CreateFromCheckedCartItems)
@@ -99,7 +99,7 @@ func TestHandlerCreateFromCheckedCartItems(t *testing.T) {
 
 func TestHandlerCreateFromCheckedCartItemsBadRequest(t *testing.T) {
 	gin.SetMode(gin.TestMode)
-	handler := NewHandler(NewService(NewMemoryRepository(nil), fakeCartQuery{}))
+	handler := NewHandler(NewService(NewMemoryRepository(nil), fakeCartQuery{}, nil))
 
 	router := gin.New()
 	router.POST("/orders/from-cart", handler.CreateFromCheckedCartItems)

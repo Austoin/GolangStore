@@ -14,9 +14,21 @@ func (f fakeCartQuery) ListCheckedItems(userID uint64) []cart.Item {
 	return f.items
 }
 
+type fakeStockStore struct {
+	stock map[uint64]int
+}
+
+func (f *fakeStockStore) HasEnough(productID uint64, quantity int) bool {
+	return f.stock[productID] >= quantity
+}
+
+func (f *fakeStockStore) Deduct(productID uint64, quantity int) {
+	f.stock[productID] -= quantity
+}
+
 func TestServiceGetOrder(t *testing.T) {
 	repo := NewMemoryRepository([]Order{{OrderNo: "O2026002", UserID: 2, Status: StatusPaid}})
-	service := NewService(repo, fakeCartQuery{})
+	service := NewService(repo, fakeCartQuery{}, nil)
 
 	entity, err := service.GetOrder("O2026002")
 	if err != nil {
@@ -29,7 +41,7 @@ func TestServiceGetOrder(t *testing.T) {
 }
 
 func TestConvertCartItemsToOrderItems(t *testing.T) {
-	service := NewService(NewMemoryRepository(nil), fakeCartQuery{})
+	service := NewService(NewMemoryRepository(nil), fakeCartQuery{}, nil)
 
 	items := service.ConvertCartItems([]cart.Item{{
 		ProductID:   9,
@@ -48,7 +60,7 @@ func TestConvertCartItemsToOrderItems(t *testing.T) {
 }
 
 func TestServiceCreateOrder(t *testing.T) {
-	service := NewService(NewMemoryRepository(nil), fakeCartQuery{})
+	service := NewService(NewMemoryRepository(nil), fakeCartQuery{}, nil)
 
 	entity, err := service.CreateOrder(CreateRequest{
 		UserID: 3,
@@ -80,7 +92,7 @@ func TestServiceCreateOrderFromCheckedCartItems(t *testing.T) {
 	service := NewService(NewMemoryRepository(nil), fakeCartQuery{items: []cart.Item{
 		{UserID: 3, ProductID: 1, ProductName: "phone", Price: 100, Quantity: 2, Checked: true},
 		{UserID: 3, ProductID: 2, ProductName: "cable", Price: 50, Quantity: 1, Checked: true},
-	}})
+	}}, nil)
 
 	entity, err := service.CreateOrderFromCheckedCartItems(3)
 	if err != nil {
@@ -97,10 +109,38 @@ func TestServiceCreateOrderFromCheckedCartItems(t *testing.T) {
 }
 
 func TestServiceCreateOrderFromCheckedCartItemsEmpty(t *testing.T) {
-	service := NewService(NewMemoryRepository(nil), fakeCartQuery{})
+	service := NewService(NewMemoryRepository(nil), fakeCartQuery{}, nil)
 
 	_, err := service.CreateOrderFromCheckedCartItems(3)
 	if err == nil {
 		t.Fatal("expected error for empty checked cart items")
+	}
+}
+
+func TestServiceCreateOrderFromCheckedCartItemsDeductsStock(t *testing.T) {
+	stocks := &fakeStockStore{stock: map[uint64]int{1: 5}}
+	service := NewService(NewMemoryRepository(nil), fakeCartQuery{items: []cart.Item{{
+		UserID: 3, ProductID: 1, ProductName: "phone", Price: 100, Quantity: 2, Checked: true,
+	}}}, stocks)
+
+	_, err := service.CreateOrderFromCheckedCartItems(3)
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
+
+	if stocks.stock[1] != 3 {
+		t.Fatalf("expected stock 3, got %d", stocks.stock[1])
+	}
+}
+
+func TestServiceCreateOrderFromCheckedCartItemsRejectsInsufficientStock(t *testing.T) {
+	stocks := &fakeStockStore{stock: map[uint64]int{1: 1}}
+	service := NewService(NewMemoryRepository(nil), fakeCartQuery{items: []cart.Item{{
+		UserID: 3, ProductID: 1, ProductName: "phone", Price: 100, Quantity: 2, Checked: true,
+	}}}, stocks)
+
+	_, err := service.CreateOrderFromCheckedCartItems(3)
+	if err == nil {
+		t.Fatal("expected insufficient stock error")
 	}
 }

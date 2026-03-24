@@ -91,3 +91,25 @@
 ### 当前验证结果
 - 已执行：`go test ./internal/cart && go test ./cmd/cart-service`
 - 结果：通过
+
+### Task 3：下单库存校验与扣减
+- 已更新：
+  - `internal/order/service.go`
+  - `internal/order/service_test.go`
+  - `internal/order/handler_test.go`
+  - `internal/product/mysql_repo.go`
+  - `internal/product/mysql_repo_test.go`
+  - `README.md`
+
+### 当前实现结果
+- `order.Service` 已新增库存依赖。
+- 当前下单流程会在创建订单前校验每个商品是否库存充足。
+- 当前下单流程会在创建成功前执行库存扣减。
+- 当前新增错误：`ErrInsufficientStock`。
+- `internal/product.MySQLRepository` 已支持：
+  - `HasEnough(productID, quantity)`
+  - `Deduct(productID, quantity)`
+
+### 当前验证结果
+- 已执行：`go test ./internal/product && go test ./internal/order`
+- 结果：通过

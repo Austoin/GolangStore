@@ -8,18 +8,25 @@ import (
 )
 
 var ErrEmptyCheckedCartItems = errors.New("checked cart items cannot be empty")
+var ErrInsufficientStock = errors.New("insufficient stock")
 
 type Service struct {
-	repo  Repository
-	carts cartQuery
+	repo   Repository
+	carts  cartQuery
+	stocks stockStore
 }
 
 type cartQuery interface {
 	ListCheckedItems(userID uint64) []cart.Item
 }
 
-func NewService(repo Repository, carts cartQuery) Service {
-	return Service{repo: repo, carts: carts}
+type stockStore interface {
+	HasEnough(productID uint64, quantity int) bool
+	Deduct(productID uint64, quantity int)
+}
+
+func NewService(repo Repository, carts cartQuery, stocks stockStore) Service {
+	return Service{repo: repo, carts: carts, stocks: stocks}
 }
 
 func (s Service) GetOrder(orderNo string) (Order, error) {
@@ -56,6 +63,17 @@ func (s Service) CreateOrderFromCheckedCartItems(userID uint64) (Order, error) {
 	checkedItems := s.carts.ListCheckedItems(userID)
 	if len(checkedItems) == 0 {
 		return Order{}, ErrEmptyCheckedCartItems
+	}
+
+	if s.stocks != nil {
+		for _, item := range checkedItems {
+			if !s.stocks.HasEnough(item.ProductID, item.Quantity) {
+				return Order{}, ErrInsufficientStock
+			}
+		}
+		for _, item := range checkedItems {
+			s.stocks.Deduct(item.ProductID, item.Quantity)
+		}
 	}
 
 	items := s.ConvertCartItems(checkedItems)

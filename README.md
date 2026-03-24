@@ -45,6 +45,7 @@
 - 已创建端到端业务完成总计划，目标是补全核心业务逻辑并支持一键启动、一键演示效果
 - `internal/product/mysql_repo.go` 与 `cmd/product-service` 已落地，商品查询已具备 MySQL 读取能力
 - `internal/cart` 与 `cmd/cart-service` 已落地写接口，购物车新增已具备 MySQL 写入能力
+- `internal/order` 已接入库存校验与扣减逻辑，下单前会检查库存并在成功后扣减库存
 
 详细过程见：
 
