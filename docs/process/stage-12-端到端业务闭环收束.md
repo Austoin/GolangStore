@@ -39,3 +39,26 @@
   - 提交 git
   - 推送云端
 - 继续坚持先测试失败、再实现、再验证。
+
+## 当前进展
+
+### Task 1：商品持久化与查询真实化
+- 已创建：
+  - `internal/product/mysql_repo.go`
+  - `internal/product/mysql_repo_test.go`
+  - `cmd/product-service/router.go`
+  - `cmd/product-service/router_test.go`
+- 已更新：
+  - `cmd/product-service/main.go`
+  - `README.md`
+
+### 当前实现结果
+- `internal/product` 已支持从 `products` + `product_stocks` 读取商品与库存。
+- `cmd/product-service` 已接入 MySQL 装配。
+- 已挂载路由：
+  - `GET /health`
+  - `GET /products/:id`
+
+### 当前验证结果
+- 已执行：`go test ./internal/product && go test ./cmd/product-service`
+- 结果：通过

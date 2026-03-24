@@ -1,0 +1,46 @@
+package product
+
+import "gorm.io/gorm"
+
+type productRow struct {
+	ID          uint64 `gorm:"column:id"`
+	Name        string `gorm:"column:name"`
+	Description string `gorm:"column:description"`
+	Price       uint64 `gorm:"column:price"`
+	Status      uint8  `gorm:"column:status"`
+}
+
+type stockRow struct {
+	ProductID uint64 `gorm:"column:product_id"`
+	Stock     int    `gorm:"column:stock"`
+}
+
+type MySQLRepository struct {
+	db *gorm.DB
+}
+
+func NewMySQLRepository(db *gorm.DB) MySQLRepository {
+	return MySQLRepository{db: db}
+}
+
+func (r MySQLRepository) GetByID(id uint64) (Product, error) {
+	var prod productRow
+	if err := r.db.Table("products").Where("id = ?", id).First(&prod).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return Product{}, ErrProductNotFound
+		}
+		return Product{}, err
+	}
+
+	var stock stockRow
+	r.db.Table("product_stocks").Where("product_id = ?", id).First(&stock)
+
+	return Product{
+		ID:          prod.ID,
+		Name:        prod.Name,
+		Description: prod.Description,
+		Price:       prod.Price,
+		Status:      prod.Status,
+		Stock:       stock.Stock,
+	}, nil
+}

@@ -43,6 +43,7 @@
 - `scripts/start.sh` 已兼容 Git Bash / WSL 对 Go 路径的差异，不再因 shell 环境差异误报 `go is required`
 - 已完成一次真实业务验证：插入购物车数据 -> 调用 `/orders/from-cart` -> `orders` 与 `order_items` 成功落库
 - 已创建端到端业务完成总计划，目标是补全核心业务逻辑并支持一键启动、一键演示效果
+- `internal/product/mysql_repo.go` 与 `cmd/product-service` 已落地，商品查询已具备 MySQL 读取能力
 
 详细过程见：
 

@@ -1,15 +1,20 @@
 package main
 
 import (
-	"net/http"
-
-	"github.com/gin-gonic/gin"
+	"github.com/austoin/GolangStore/internal/product"
+	"github.com/austoin/GolangStore/pkg/config"
+	projectmysql "github.com/austoin/GolangStore/pkg/mysql"
 )
 
 func main() {
-	router := gin.Default()
-	router.GET("/health", func(ctx *gin.Context) {
-		ctx.JSON(http.StatusOK, gin.H{"service": "product-service", "status": "ok"})
-	})
+	conf := config.Load()
+	db, err := projectmysql.Open(conf.MySQL)
+	if err != nil {
+		panic(err)
+	}
+	repo := product.NewMySQLRepository(db)
+	service := product.NewService(repo)
+	handler := product.NewHandler(service)
+	router := newRouter(handler)
 	_ = router.Run(":8081")
 }
