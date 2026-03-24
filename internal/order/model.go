@@ -13,6 +13,18 @@ type Item struct {
 	Quantity    int
 }
 
+type CreateItemRequest struct {
+	ProductID   uint64
+	ProductName string
+	Price       uint64
+	Quantity    int
+}
+
+type CreateRequest struct {
+	UserID uint64
+	Items  []CreateItemRequest
+}
+
 type Order struct {
 	ID          uint64
 	OrderNo     string
@@ -32,4 +44,13 @@ func (o Order) IsPaid() bool {
 
 func (o Order) HasItems() bool {
 	return len(o.Items) > 0
+}
+
+func (o Order) CalculateTotalAmount() uint64 {
+	var total uint64
+	for _, item := range o.Items {
+		total += item.Price * uint64(item.Quantity)
+	}
+
+	return total
 }

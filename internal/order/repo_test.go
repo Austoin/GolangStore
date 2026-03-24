@@ -26,3 +26,22 @@ func TestMemoryRepositoryGetByOrderNoNotFound(t *testing.T) {
 		t.Fatalf("expected ErrOrderNotFound, got %v", err)
 	}
 }
+
+func TestMemoryRepositoryCreate(t *testing.T) {
+	repo := NewMemoryRepository(nil)
+	entity := Order{OrderNo: "O2027001", UserID: 7, Status: StatusPending}
+
+	created, err := repo.Create(entity)
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
+
+	loaded, err := repo.GetByOrderNo("O2027001")
+	if err != nil {
+		t.Fatalf("expected order to be stored, got %v", err)
+	}
+
+	if created.OrderNo != loaded.OrderNo {
+		t.Fatalf("expected created and loaded order no to match")
+	}
+}

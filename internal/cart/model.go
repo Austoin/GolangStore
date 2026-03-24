@@ -1,10 +1,12 @@
 package cart
 
 type Item struct {
-	UserID    uint64
-	ProductID uint64
-	Quantity  int
-	Checked   bool
+	UserID      uint64
+	ProductID   uint64
+	ProductName string
+	Price       uint64
+	Quantity    int
+	Checked     bool
 }
 
 func (i Item) IsValidQuantity() bool {

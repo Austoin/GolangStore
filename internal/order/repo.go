@@ -6,6 +6,7 @@ var ErrOrderNotFound = errors.New("order not found")
 
 type Repository interface {
 	GetByOrderNo(orderNo string) (Order, error)
+	Create(order Order) (Order, error)
 }
 
 type MemoryRepository struct {
@@ -28,4 +29,9 @@ func (r MemoryRepository) GetByOrderNo(orderNo string) (Order, error) {
 	}
 
 	return item, nil
+}
+
+func (r MemoryRepository) Create(order Order) (Order, error) {
+	r.items[order.OrderNo] = order
+	return order, nil
 }

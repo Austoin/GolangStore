@@ -1,15 +1,16 @@
 package main
 
 import (
-	"net/http"
-
-	"github.com/gin-gonic/gin"
+	"github.com/austoin/GolangStore/internal/cart"
+	"github.com/austoin/GolangStore/internal/order"
 )
 
 func main() {
-	router := gin.Default()
-	router.GET("/health", func(ctx *gin.Context) {
-		ctx.JSON(http.StatusOK, gin.H{"service": "order-service", "status": "ok"})
-	})
+	repo := order.NewMemoryRepository(nil)
+	cartRepo := cart.NewMemoryRepository(nil)
+	cartService := cart.NewService(cartRepo)
+	service := order.NewService(repo, cartService)
+	handler := order.NewHandler(service)
+	router := newRouter(handler)
 	_ = router.Run(":8082")
 }

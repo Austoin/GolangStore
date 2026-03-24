@@ -11,3 +11,15 @@ func NewService(repo Repository) Service {
 func (s Service) ListItems(userID uint64) []Item {
 	return s.repo.ListByUserID(userID)
 }
+
+func (s Service) ListCheckedItems(userID uint64) []Item {
+	items := s.repo.ListByUserID(userID)
+	checked := make([]Item, 0)
+	for _, item := range items {
+		if item.Checked {
+			checked = append(checked, item)
+		}
+	}
+
+	return checked
+}

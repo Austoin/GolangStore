@@ -25,6 +25,14 @@
 - `internal/cart` 购物车查询最小 repo/service/handler 链路与测试
 - `internal/order` 订单查询最小 repo/service/handler 链路与测试
 - 当前全量验证命令 `go test ./...` 已通过
+- `阶段 05` 计划文档已创建，准备进入下单创建与状态流转实现
+- `internal/order` 已具备最小下单创建流程：输入模型、金额计算、购物车转订单项、创建订单 handler
+- `阶段 06` 计划文档已创建，准备进入购物车到下单编排实现
+- `internal/cart` 已具备已勾选购物车项提取能力，`internal/order` 已具备购物车到下单编排入口
+- `阶段 07` 计划文档已创建，准备接通 `order-service` 运行入口路由
+- `cmd/order-service` 已接通订单查询、创建订单、购物车到下单编排路由
+- `阶段 08` 计划文档已创建，准备改造成“订单服务主动读取购物车”的真实编排
+- `/orders/from-cart` 已收缩为只接收 `user_id`，并由 `order-service` 主动读取已勾选购物车项完成下单
 
 详细过程见：
 
@@ -34,3 +42,11 @@
 - `docs/process/stage-02-项目骨架创建.md`
 - `docs/process/stage-03-公共基础设施与数据库初始化.md`
 - `docs/process/stage-04-商品购物车订单主链路.md`
+- `docs/process/stage-05-下单创建与状态流转.md`
+- `docs/plans/2026-03-24-order-creation-stage-plan.md`
+- `docs/process/stage-06-购物车到下单编排.md`
+- `docs/plans/2026-03-24-cart-to-order-orchestration-plan.md`
+- `docs/process/stage-07-order-service路由接线.md`
+- `docs/plans/2026-03-24-order-service-routing-plan.md`
+- `docs/process/stage-08-真实购物车到下单编排.md`
+- `docs/plans/2026-03-24-real-cart-to-order-plan.md`

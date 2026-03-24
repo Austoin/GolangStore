@@ -267,3 +267,26 @@
 ### 当前阶段结论
 - 阶段 04 当前成果已具备提交条件。
 - 下一步进入提交并推送阶段。
+
+## 批次 04H：阶段 04 提交与远端同步
+
+### 本批次目标
+- 将阶段 04 当前成果提交到版本库。
+- 推送到 GitHub 远端并做状态验证。
+
+### 本批次已完成
+- 已创建提交：`cfaee61` `feat: add domain query workflows`
+- 已执行推送到远端 `origin/master`
+
+### 当前验证结果
+- `git status`：工作区干净
+- `git branch -vv`：当前 `master` 跟踪 `origin/master`
+- `git ls-remote --heads origin`：远端 `master` 指向 `cfaee61`
+
+### 当前注意事项
+- 推送过程中仍出现本地凭据锁告警，但远端分支更新已成功完成。
+- 远端继续提示仓库规范地址为：`https://github.com/Austoin/GolangStore.git`
+
+### 当前阶段结论
+- 阶段 04 的领域模型和三条最小查询链路已完成并同步到远端。
+- 下一阶段应进入下单创建、订单状态流转和购物车到订单转换流程设计。
