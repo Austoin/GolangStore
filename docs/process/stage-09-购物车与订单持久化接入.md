@@ -227,3 +227,34 @@
   - `git status` 工作区干净
   - `git branch -vv` 显示本地 `master` 跟踪 `origin/master`
   - `git ls-remote --heads origin` 显示远端 `master` 指向 `227d2b4`
+
+## 阶段 11：真实业务效果验证
+
+### 已完成内容
+- 已向 `cart_items` 插入测试数据。
+- 已调用：`POST /orders/from-cart`
+- 已回查 `orders` 与 `order_items`。
+- 已同步更新：`README.md`
+
+### 当前验证步骤
+1. 清空 `order_items`、`orders`、`cart_items`
+2. 插入测试购物车：
+   - `user_id = 1`
+   - `product_id = 101`
+   - `product_name = phone`
+   - `price = 199900`
+   - `quantity = 2`
+   - `checked = 1`
+3. 调用接口：`POST /orders/from-cart`
+4. 回查数据库表
+
+### 当前验证结果
+- 接口返回：
+  - `OrderNo = O1001`
+  - `TotalAmount = 399800`
+  - `Status = 1`
+- 数据库落库结果：
+  - `orders` 成功新增 1 条
+  - `order_items` 成功新增 1 条
+- 当前验证闭环成立：
+  - 购物车数据 -> 编排下单 -> 订单落库 -> 订单项落库

@@ -41,6 +41,7 @@
 - `cart_items` 初始化表结构已补齐 `product_name`、`price`，与当前仓储/编排模型保持一致
 - `scripts/start.sh` 已增加版本号、go 路径、docker daemon 状态等诊断输出，便于排查启动失败原因
 - `scripts/start.sh` 已兼容 Git Bash / WSL 对 Go 路径的差异，不再因 shell 环境差异误报 `go is required`
+- 已完成一次真实业务验证：插入购物车数据 -> 调用 `/orders/from-cart` -> `orders` 与 `order_items` 成功落库
 
 详细过程见：
 
