@@ -6,6 +6,7 @@ readonly PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 readonly RUNTIME_DIR="$PROJECT_ROOT/.runtime"
 readonly ORDER_LOG="$RUNTIME_DIR/order-service.log"
 readonly ORDER_PID_FILE="$RUNTIME_DIR/order-service.pid"
+readonly SCRIPT_VERSION="2026-03-25-stage10"
 
 log() {
     echo "[$(date '+%H:%M:%S')] $*" >&2
@@ -74,11 +75,19 @@ start_order_service() {
 }
 
 main() {
+    log "script version: $SCRIPT_VERSION"
+    log "project root: $PROJECT_ROOT"
+
     command -v docker >/dev/null 2>&1 || die "docker is required"
     command -v curl >/dev/null 2>&1 || die "curl is required"
     command -v go >/dev/null 2>&1 || die "go is required"
 
+    log "docker path: $(command -v docker)"
+    log "curl path: $(command -v curl)"
+    log "go path: $(command -v go)"
+
     docker info >/dev/null 2>&1 || die "docker daemon is not running"
+    log "docker daemon check: ok"
 
     log "starting mysql and redis with docker compose"
     docker compose up -d mysql redis

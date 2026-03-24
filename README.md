@@ -39,6 +39,7 @@
 - `cmd/order-service` 运行时装配已切换到 MySQL 仓储实现
 - 已提供 `scripts/start.sh` 一键启动脚本，用于启动 MySQL、Redis 和 order-service
 - `cart_items` 初始化表结构已补齐 `product_name`、`price`，与当前仓储/编排模型保持一致
+- `scripts/start.sh` 已增加版本号、go 路径、docker daemon 状态等诊断输出，便于排查启动失败原因
 
 详细过程见：
 
