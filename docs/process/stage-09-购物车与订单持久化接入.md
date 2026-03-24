@@ -96,3 +96,37 @@
 ### 当前限制
 - 当前写入未包事务，后续接入真实生产链路时需要补事务控制。
 - 当前测试基于 sqlite 内存库验证仓储行为，不直接依赖真实 MySQL 实例。
+
+### 本批次提交与远端同步
+- 已创建提交：`7c70ee7` `feat: add order mysql repository`
+- 已推送到远端 `origin/master`
+- 已验证：
+  - `git status` 工作区干净
+  - `git branch -vv` 显示本地 `master` 跟踪 `origin/master`
+  - `git ls-remote --heads origin` 显示远端 `master` 指向 `7c70ee7`
+
+## 批次 09D：切换 order-service 到 MySQL 装配
+
+### 已完成内容
+- 已更新：`cmd/order-service/main.go`
+- 已更新：`cmd/order-service/router_test.go`
+- 已同步更新：`README.md`
+
+### 当前实现内容
+- `cmd/order-service` 启动时改为：
+  - 读取 `config.Load()`
+  - 使用 `pkg/mysql.Open()` 打开数据库连接
+  - 装配 `cart.NewMySQLRepository(db)`
+  - 装配 `order.NewMySQLRepository(db)`
+- 已将运行时装配拆分为：
+  - `buildRuntimeDependencies(conf)`
+  - `buildHandler(db)`
+- 测试通过 `buildHandler(db)` 避免直接依赖真实 MySQL 连接。
+
+### 当前验证结果
+- 已执行：`go test ./cmd/order-service`
+- 结果：通过
+
+### 当前限制
+- 当前服务启动仍直接 `panic(err)`，后续可再补更友好的启动错误处理。
+- 当前未自动执行建表/迁移，默认依赖数据库已有初始化脚本。

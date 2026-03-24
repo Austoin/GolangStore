@@ -36,6 +36,7 @@
 - `阶段 09` 计划文档已创建，准备把购物车与订单从内存实现切换到 MySQL 持久化
 - `internal/cart/mysql_repo.go` 已落地，购物车读取已具备 MySQL 仓储实现
 - `internal/order/mysql_repo.go` 已落地，订单创建与订单查询已具备 MySQL 仓储实现
+- `cmd/order-service` 运行时装配已切换到 MySQL 仓储实现
 
 详细过程见：
 
