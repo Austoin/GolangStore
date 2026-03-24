@@ -1,0 +1,97 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+readonly PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+readonly RUNTIME_DIR="$PROJECT_ROOT/.runtime"
+readonly ORDER_LOG="$RUNTIME_DIR/order-service.log"
+readonly ORDER_PID_FILE="$RUNTIME_DIR/order-service.pid"
+
+log() {
+    echo "[$(date '+%H:%M:%S')] $*" >&2
+}
+
+die() {
+    log "ERROR: $*"
+    exit 1
+}
+
+wait_for_compose_health() {
+    local service="$1"
+    local retries=30
+    local count=0
+
+    while [[ $count -lt $retries ]]; do
+        local status
+        status=$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}{{.State.Status}}{{end}}' "$service" 2>/dev/null || true)
+        if [[ "$status" == "healthy" || "$status" == "running" ]]; then
+            log "$service is ready: $status"
+            return 0
+        fi
+        ((count+=1))
+        sleep 2
+    done
+
+    die "service did not become ready: $service"
+}
+
+wait_for_http() {
+    local url="$1"
+    local retries=30
+    local count=0
+
+    while [[ $count -lt $retries ]]; do
+        if curl -fsS "$url" >/dev/null 2>&1; then
+            log "HTTP ready: $url"
+            return 0
+        fi
+        ((count+=1))
+        sleep 2
+    done
+
+    die "http endpoint did not become ready: $url"
+}
+
+start_order_service() {
+    mkdir -p "$RUNTIME_DIR"
+
+    if [[ -f "$ORDER_PID_FILE" ]]; then
+        local old_pid
+        old_pid="$(cat "$ORDER_PID_FILE")"
+        if kill -0 "$old_pid" >/dev/null 2>&1; then
+            log "stopping existing order-service pid=$old_pid"
+            kill "$old_pid" >/dev/null 2>&1 || true
+            sleep 1
+        fi
+        rm -f "$ORDER_PID_FILE"
+    fi
+
+    log "starting order-service"
+    nohup go run ./cmd/order-service >"$ORDER_LOG" 2>&1 &
+    local pid=$!
+    echo "$pid" >"$ORDER_PID_FILE"
+    log "order-service pid=$pid"
+}
+
+main() {
+    command -v docker >/dev/null 2>&1 || die "docker is required"
+    command -v curl >/dev/null 2>&1 || die "curl is required"
+    command -v go >/dev/null 2>&1 || die "go is required"
+
+    docker info >/dev/null 2>&1 || die "docker daemon is not running"
+
+    log "starting mysql and redis with docker compose"
+    docker compose up -d mysql redis
+
+    wait_for_compose_health golangstore-mysql
+    wait_for_compose_health golangstore-redis
+
+    start_order_service
+    wait_for_http http://127.0.0.1:8082/health
+
+    log "startup complete"
+    log "order-service log: $ORDER_LOG"
+    curl -fsS http://127.0.0.1:8082/health
+}
+
+main "$@"

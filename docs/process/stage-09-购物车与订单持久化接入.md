@@ -139,6 +139,33 @@
   - `git branch -vv` 显示本地 `master` 跟踪 `origin/master`
   - `git ls-remote --heads origin` 显示远端 `master` 指向 `1a73534`
 
+## 阶段 10：一键启动验证脚本
+
+### 已完成内容
+- 已创建：`.gitignore`
+- 已创建：`scripts/start.sh`
+- 已更新：`docker-compose.yml`
+- 已同步更新：`README.md`
+
+### 当前实现内容
+- `scripts/start.sh` 会执行：
+  - 启动 `mysql`、`redis`
+  - 等待中间件就绪
+  - 后台启动 `order-service`
+  - 检查 `http://127.0.0.1:8082/health`
+- 运行时日志写入：`.runtime/order-service.log`
+- 运行时 PID 写入：`.runtime/order-service.pid`
+
+### 当前验证结果
+- 已执行：`bash -n scripts/start.sh`
+- 已执行：`bash scripts/start.sh`
+- 当前环境结果：失败，错误为 `docker daemon is not running`
+
+### 当前结论
+- 脚本语法正确。
+- 脚本在 Docker daemon 不可用时会给出明确错误，而不是静默失败。
+- 当前无法完成真实启动，是环境中的 Docker daemon 未启动，不是脚本解析错误。
+
 ## 阶段 10：持久化模式一致性修复
 
 ### 当前问题
@@ -154,3 +181,11 @@
 ### 当前影响
 - 初始化数据库后，购物车读取模型与订单编排模型将不再发生字段缺失。
 - 该修复避免了运行时读取购物车时的结构不一致问题。
+
+### 本批次提交与远端同步
+- 已创建提交：`227d2b4` `fix: align cart schema with order workflow`
+- 已推送到远端 `origin/master`
+- 已验证：
+  - `git status` 工作区干净
+  - `git branch -vv` 显示本地 `master` 跟踪 `origin/master`
+  - `git ls-remote --heads origin` 显示远端 `master` 指向 `227d2b4`
