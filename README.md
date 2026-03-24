@@ -42,6 +42,7 @@
 - `scripts/start.sh` 已增加版本号、go 路径、docker daemon 状态等诊断输出，便于排查启动失败原因
 - `scripts/start.sh` 已兼容 Git Bash / WSL 对 Go 路径的差异，不再因 shell 环境差异误报 `go is required`
 - 已完成一次真实业务验证：插入购物车数据 -> 调用 `/orders/from-cart` -> `orders` 与 `order_items` 成功落库
+- 已创建端到端业务完成总计划，目标是补全核心业务逻辑并支持一键启动、一键演示效果
 
 详细过程见：
 
@@ -61,3 +62,5 @@
 - `docs/plans/2026-03-24-real-cart-to-order-plan.md`
 - `docs/process/stage-09-购物车与订单持久化接入.md`
 - `docs/plans/2026-03-24-cart-order-persistence-plan.md`
+- `docs/process/stage-12-端到端业务闭环收束.md`
+- `docs/plans/2026-03-25-end-to-end-business-completion-plan.md`
