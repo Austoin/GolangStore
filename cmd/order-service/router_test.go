@@ -14,7 +14,7 @@ import (
 )
 
 func TestNewRouterHealth(t *testing.T) {
-	handler := order.NewHandler(order.NewService(order.NewMemoryRepository(nil), cart.NewService(cart.NewMemoryRepository(nil))))
+	handler := order.NewHandler(order.NewService(order.NewMemoryRepository(nil), cart.NewService(cart.NewMemoryRepository(nil)), nil))
 	router := newRouter(handler)
 
 	req := httptest.NewRequest(http.MethodGet, "/health", nil)
@@ -27,7 +27,7 @@ func TestNewRouterHealth(t *testing.T) {
 }
 
 func TestNewRouterOrderRoutes(t *testing.T) {
-	handler := order.NewHandler(order.NewService(order.NewMemoryRepository(nil), cart.NewService(cart.NewMemoryRepository(nil))))
+	handler := order.NewHandler(order.NewService(order.NewMemoryRepository(nil), cart.NewService(cart.NewMemoryRepository(nil)), nil))
 	router := newRouter(handler)
 
 	req := httptest.NewRequest(http.MethodGet, "/orders/O404", nil)

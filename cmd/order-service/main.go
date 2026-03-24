@@ -23,7 +23,7 @@ func buildHandler(db *gorm.DB) order.Handler {
 	orderRepo := order.NewMySQLRepository(db)
 	cartRepo := cart.NewMySQLRepository(db)
 	cartService := cart.NewService(cartRepo)
-	service := order.NewService(orderRepo, cartService)
+	service := order.NewService(orderRepo, cartService, nil)
 	return order.NewHandler(service)
 }
 
