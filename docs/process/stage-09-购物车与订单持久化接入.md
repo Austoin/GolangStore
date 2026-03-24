@@ -62,3 +62,37 @@
 ### 当前限制
 - 当前只实现读取，不含写入能力。
 - 当前测试基于 sqlite 内存库验证 SQL 映射，不直接依赖真实 MySQL 实例。
+
+### 本批次提交与远端同步
+- 已创建提交：`7b6a805` `feat: add cart mysql repository`
+- 已推送到远端 `origin/master`
+- 已验证：
+  - `git status` 工作区干净
+  - `git branch -vv` 显示本地 `master` 跟踪 `origin/master`
+  - `git ls-remote --heads origin` 显示远端 `master` 指向 `7b6a805`
+
+## 批次 09C：order MySQL 仓储
+
+### 已完成内容
+- 已创建：`internal/order/mysql_repo.go`
+- 已创建：`internal/order/mysql_repo_test.go`
+- 已同步更新：`README.md`
+
+### 当前实现内容
+- `MySQLRepository` 使用 Gorm 读写：
+  - `orders`
+  - `order_items`
+- 当前已支持：
+  - `Create(order)`
+  - `GetByOrderNo(orderNo)`
+- 已完成数据库行到领域模型的映射：
+  - 订单主表 -> `Order`
+  - 订单项表 -> `[]Item`
+
+### 当前验证结果
+- 已执行：`go test ./internal/order`
+- 结果：通过
+
+### 当前限制
+- 当前写入未包事务，后续接入真实生产链路时需要补事务控制。
+- 当前测试基于 sqlite 内存库验证仓储行为，不直接依赖真实 MySQL 实例。
