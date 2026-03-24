@@ -23,3 +23,7 @@ func (s Service) ListCheckedItems(userID uint64) []Item {
 
 	return checked
 }
+
+func (s Service) AddItem(item Item) Item {
+	return s.repo.Save(item)
+}

@@ -62,3 +62,32 @@
 ### 当前验证结果
 - 已执行：`go test ./internal/product && go test ./cmd/product-service`
 - 结果：通过
+
+### Task 2：购物车写接口补齐
+- 已创建：
+  - `cmd/cart-service/router.go`
+  - `cmd/cart-service/router_test.go`
+- 已更新：
+  - `internal/cart/repo.go`
+  - `internal/cart/service.go`
+  - `internal/cart/handler.go`
+  - `internal/cart/mysql_repo.go`
+  - `internal/cart/repo_test.go`
+  - `internal/cart/service_test.go`
+  - `internal/cart/handler_test.go`
+  - `cmd/cart-service/main.go`
+  - `README.md`
+
+### 当前实现结果
+- `internal/cart` 已支持 `Save(item)`。
+- `cart.Service` 已支持 `AddItem(item)`。
+- `cart.Handler` 已支持 `POST /carts`。
+- `cmd/cart-service` 已接入 MySQL 装配。
+- 当前路由：
+  - `GET /health`
+  - `GET /carts/:userId`
+  - `POST /carts`
+
+### 当前验证结果
+- 已执行：`go test ./internal/cart && go test ./cmd/cart-service`
+- 结果：通过

@@ -37,3 +37,16 @@ func (r MySQLRepository) ListByUserID(userID uint64) []Item {
 
 	return items
 }
+
+func (r MySQLRepository) Save(item Item) Item {
+	row := mysqlRow{
+		UserID:      item.UserID,
+		ProductID:   item.ProductID,
+		ProductName: item.ProductName,
+		Price:       item.Price,
+		Quantity:    item.Quantity,
+		Checked:     item.Checked,
+	}
+	r.db.Table("cart_items").Create(&row)
+	return item
+}

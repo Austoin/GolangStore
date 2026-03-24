@@ -29,3 +29,13 @@ func TestServiceListCheckedItems(t *testing.T) {
 		t.Fatal("expected all returned items to be checked")
 	}
 }
+
+func TestServiceAddItem(t *testing.T) {
+	repo := NewMemoryRepository(nil)
+	service := NewService(repo)
+
+	item := service.AddItem(Item{UserID: 1, ProductID: 11, ProductName: "phone", Price: 100, Quantity: 2, Checked: true})
+	if item.Quantity != 2 {
+		t.Fatalf("expected quantity 2, got %d", item.Quantity)
+	}
+}

@@ -25,3 +25,14 @@ func (h Handler) ListByUserID(ctx *gin.Context) {
 	items := h.service.ListItems(userID)
 	ctx.JSON(http.StatusOK, items)
 }
+
+func (h Handler) AddItem(ctx *gin.Context) {
+	var item Item
+	if err := ctx.ShouldBindJSON(&item); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid request"})
+		return
+	}
+
+	saved := h.service.AddItem(item)
+	ctx.JSON(http.StatusCreated, saved)
+}
