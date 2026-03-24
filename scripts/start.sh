@@ -4,7 +4,11 @@ set -euo pipefail
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 readonly RUNTIME_DIR="$PROJECT_ROOT/.runtime"
+readonly PRODUCT_LOG="$RUNTIME_DIR/product-service.log"
+readonly CART_LOG="$RUNTIME_DIR/cart-service.log"
 readonly ORDER_LOG="$RUNTIME_DIR/order-service.log"
+readonly PRODUCT_PID_FILE="$RUNTIME_DIR/product-service.pid"
+readonly CART_PID_FILE="$RUNTIME_DIR/cart-service.pid"
 readonly ORDER_PID_FILE="$RUNTIME_DIR/order-service.pid"
 readonly SCRIPT_VERSION="2026-03-25-stage10"
 GO_BIN=""
@@ -73,25 +77,57 @@ wait_for_http() {
     die "http endpoint did not become ready: $url"
 }
 
-start_order_service() {
-    mkdir -p "$RUNTIME_DIR"
+stop_existing_process() {
+    local pid_file="$1"
+    local name="$2"
 
-    if [[ -f "$ORDER_PID_FILE" ]]; then
+    if [[ -f "$pid_file" ]]; then
         local old_pid
-        old_pid="$(cat "$ORDER_PID_FILE")"
+        old_pid="$(cat "$pid_file")"
         if kill -0 "$old_pid" >/dev/null 2>&1; then
-            log "stopping existing order-service pid=$old_pid"
+            log "stopping existing $name pid=$old_pid"
             kill "$old_pid" >/dev/null 2>&1 || true
             sleep 1
         fi
-        rm -f "$ORDER_PID_FILE"
+        rm -f "$pid_file"
+    fi
+}
+
+stop_process_on_port() {
+    local port="$1"
+    local output
+
+    output="$(powershell -Command "Get-NetTCPConnection -LocalPort $port -State Listen -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess" 2>/dev/null | tr -d '\r' || true)"
+    if [[ -z "$output" ]]; then
+        return 0
     fi
 
-    log "starting order-service with: $GO_BIN"
-    nohup "$GO_BIN" run ./cmd/order-service >"$ORDER_LOG" 2>&1 &
+    while IFS= read -r pid; do
+        [[ -z "$pid" ]] && continue
+        log "stopping process on port $port pid=$pid"
+        powershell -Command "Stop-Process -Id $pid -Force" >/dev/null 2>&1 || true
+    done <<< "$output"
+
+    sleep 1
+}
+
+start_service() {
+    local name="$1"
+    local entry="$2"
+    local log_file="$3"
+    local pid_file="$4"
+    local port="$5"
+
+    mkdir -p "$RUNTIME_DIR"
+
+    stop_existing_process "$pid_file" "$name"
+    stop_process_on_port "$port"
+
+    log "starting $name with: $GO_BIN run ./$entry"
+    nohup "$GO_BIN" run "./$entry" >"$log_file" 2>&1 &
     local pid=$!
-    echo "$pid" >"$ORDER_PID_FILE"
-    log "order-service pid=$pid"
+    echo "$pid" >"$pid_file"
+    log "$name pid=$pid"
 }
 
 main() {
@@ -115,11 +151,22 @@ main() {
     wait_for_compose_health golangstore-mysql
     wait_for_compose_health golangstore-redis
 
-    start_order_service
+    start_service product-service cmd/product-service "$PRODUCT_LOG" "$PRODUCT_PID_FILE" 8081
+    start_service cart-service cmd/cart-service "$CART_LOG" "$CART_PID_FILE" 8083
+    start_service order-service cmd/order-service "$ORDER_LOG" "$ORDER_PID_FILE" 8082
+
+    wait_for_http http://127.0.0.1:8081/health
+    wait_for_http http://127.0.0.1:8083/health
     wait_for_http http://127.0.0.1:8082/health
 
     log "startup complete"
+    log "product-service log: $PRODUCT_LOG"
+    log "cart-service log: $CART_LOG"
     log "order-service log: $ORDER_LOG"
+    curl -fsS http://127.0.0.1:8081/health
+    printf '\n'
+    curl -fsS http://127.0.0.1:8083/health
+    printf '\n'
     curl -fsS http://127.0.0.1:8082/health
 }
 

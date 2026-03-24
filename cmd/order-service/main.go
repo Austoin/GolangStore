@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/austoin/GolangStore/internal/cart"
 	"github.com/austoin/GolangStore/internal/order"
+	"github.com/austoin/GolangStore/internal/product"
 	"github.com/austoin/GolangStore/pkg/config"
 	projectmysql "github.com/austoin/GolangStore/pkg/mysql"
 	"gorm.io/gorm"
@@ -22,8 +23,9 @@ func main() {
 func buildHandler(db *gorm.DB) order.Handler {
 	orderRepo := order.NewMySQLRepository(db)
 	cartRepo := cart.NewMySQLRepository(db)
+	productRepo := product.NewMySQLRepository(db)
 	cartService := cart.NewService(cartRepo)
-	service := order.NewService(orderRepo, cartService, nil)
+	service := order.NewService(orderRepo, cartService, productRepo)
 	return order.NewHandler(service)
 }
 
