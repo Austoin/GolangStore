@@ -47,3 +47,13 @@
 ### 当前验证记录
 - 已执行：`go test ./internal/order && go test ./cmd/order-service`
 - 结果：通过
+
+### 全量验证与远端同步
+- 已执行：`go test ./...`
+- 结果：通过
+- 已创建提交：`abb1474` `feat: orchestrate cart to order workflow`
+- 已推送到远端 `origin/master`
+- 已验证：
+  - `git status` 工作区干净
+  - `git branch -vv` 显示本地 `master` 跟踪 `origin/master`
+  - `git ls-remote --heads origin` 显示远端 `master` 指向 `abb1474`

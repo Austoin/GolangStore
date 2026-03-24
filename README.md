@@ -33,6 +33,7 @@
 - `cmd/order-service` 已接通订单查询、创建订单、购物车到下单编排路由
 - `阶段 08` 计划文档已创建，准备改造成“订单服务主动读取购物车”的真实编排
 - `/orders/from-cart` 已收缩为只接收 `user_id`，并由 `order-service` 主动读取已勾选购物车项完成下单
+- `阶段 09` 计划文档已创建，准备把购物车与订单从内存实现切换到 MySQL 持久化
 
 详细过程见：
 
@@ -50,3 +51,5 @@
 - `docs/plans/2026-03-24-order-service-routing-plan.md`
 - `docs/process/stage-08-真实购物车到下单编排.md`
 - `docs/plans/2026-03-24-real-cart-to-order-plan.md`
+- `docs/process/stage-09-购物车与订单持久化接入.md`
+- `docs/plans/2026-03-24-cart-order-persistence-plan.md`
