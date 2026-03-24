@@ -7,6 +7,7 @@ readonly RUNTIME_DIR="$PROJECT_ROOT/.runtime"
 readonly ORDER_LOG="$RUNTIME_DIR/order-service.log"
 readonly ORDER_PID_FILE="$RUNTIME_DIR/order-service.pid"
 readonly SCRIPT_VERSION="2026-03-25-stage10"
+GO_BIN=""
 
 log() {
     echo "[$(date '+%H:%M:%S')] $*" >&2
@@ -15,6 +16,25 @@ log() {
 die() {
     log "ERROR: $*"
     exit 1
+}
+
+resolve_go_bin() {
+    if command -v go >/dev/null 2>&1; then
+        GO_BIN="$(command -v go)"
+        return 0
+    fi
+
+    if [[ -x "/mnt/c/Program Files/Go/bin/go.exe" ]]; then
+        GO_BIN="/mnt/c/Program Files/Go/bin/go.exe"
+        return 0
+    fi
+
+    if [[ -x "/c/Program Files/Go/bin/go.exe" ]]; then
+        GO_BIN="/c/Program Files/Go/bin/go.exe"
+        return 0
+    fi
+
+    return 1
 }
 
 wait_for_compose_health() {
@@ -67,8 +87,8 @@ start_order_service() {
         rm -f "$ORDER_PID_FILE"
     fi
 
-    log "starting order-service"
-    nohup go run ./cmd/order-service >"$ORDER_LOG" 2>&1 &
+    log "starting order-service with: $GO_BIN"
+    nohup "$GO_BIN" run ./cmd/order-service >"$ORDER_LOG" 2>&1 &
     local pid=$!
     echo "$pid" >"$ORDER_PID_FILE"
     log "order-service pid=$pid"
@@ -80,11 +100,11 @@ main() {
 
     command -v docker >/dev/null 2>&1 || die "docker is required"
     command -v curl >/dev/null 2>&1 || die "curl is required"
-    command -v go >/dev/null 2>&1 || die "go is required"
+    resolve_go_bin || die "go is required"
 
     log "docker path: $(command -v docker)"
     log "curl path: $(command -v curl)"
-    log "go path: $(command -v go)"
+    log "go path: $GO_BIN"
 
     docker info >/dev/null 2>&1 || die "docker daemon is not running"
     log "docker daemon check: ok"

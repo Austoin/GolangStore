@@ -184,6 +184,26 @@
   - `go` 路径问题
   - Docker daemon 未启动
 
+## 阶段 10：Go 路径兼容修复
+
+### 当前问题
+- 在不同 `bash` 环境中，`go` 的可执行路径解析不同。
+- 导致脚本在某些环境里误报 `ERROR: go is required`。
+
+### 当前修复
+- 已为 `scripts/start.sh` 增加 `resolve_go_bin()`。
+- 当前优先级为：
+  1. 当前 shell 中的 `go`
+  2. `/mnt/c/Program Files/Go/bin/go.exe`
+  3. `/c/Program Files/Go/bin/go.exe`
+
+### 当前验证结果
+- 已执行：`bash -n scripts/start.sh && bash scripts/start.sh`
+- 结果：
+  - 不再报 `go is required`
+  - 已成功进入 Docker Compose 启动流程
+  - 当前命令超时终止于镜像拉取阶段，不是 Go 路径问题
+
 ## 阶段 10：持久化模式一致性修复
 
 ### 当前问题
