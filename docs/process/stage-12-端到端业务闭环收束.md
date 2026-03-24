@@ -113,3 +113,32 @@
 ### 当前验证结果
 - 已执行：`go test ./internal/product && go test ./internal/order`
 - 结果：通过
+
+### Task 5：一键演示脚本（当前中间状态）
+- 已创建：`scripts/demo.sh`
+
+### 当前脚本目标
+- 清理旧数据
+- 初始化商品与库存
+- 调用 `POST /carts`
+- 调用 `POST /orders/from-cart`
+- 验证 `orders`、`order_items` 与库存扣减结果
+
+### 当前验证结果
+- 已执行：`bash -n scripts/demo.sh && bash scripts/demo.sh`
+- 第一次失败：脚本语法错误，已修复
+- 第二次失败：`cart-service is not healthy`
+
+### 当前结论
+- `demo.sh` 的脚本语法已修复。
+- 当前阻塞点不在 `demo.sh` 本身，而在 `start.sh` 尚未同时启动 `cart-service`。
+- 下一步应先增强启动脚本，再重新验证 `demo.sh`。
+
+### 本批次提交与远端同步
+- 已创建提交：`a4e0426` `feat: add stock validation and deduction`
+- 已创建提交：`a2f0e9a` `fix: align order service wiring with stock checks`
+- 已推送到远端 `origin/master`
+- 已验证：
+  - `git status` 工作区干净
+  - `git branch -vv` 显示本地 `master` 跟踪 `origin/master`
+  - `git ls-remote --heads origin` 显示远端 `master` 指向 `a2f0e9a`
