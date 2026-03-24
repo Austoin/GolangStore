@@ -130,3 +130,27 @@
 ### 当前限制
 - 当前服务启动仍直接 `panic(err)`，后续可再补更友好的启动错误处理。
 - 当前未自动执行建表/迁移，默认依赖数据库已有初始化脚本。
+
+### 本批次提交与远端同步
+- 已创建提交：`1a73534` `feat: wire order service to mysql`
+- 已推送到远端 `origin/master`
+- 已验证：
+  - `git status` 工作区干净
+  - `git branch -vv` 显示本地 `master` 跟踪 `origin/master`
+  - `git ls-remote --heads origin` 显示远端 `master` 指向 `1a73534`
+
+## 阶段 10：持久化模式一致性修复
+
+### 当前问题
+- `internal/cart` 的 MySQL 仓储与购物车到下单编排逻辑依赖 `cart_items.product_name`、`cart_items.price`。
+- 但初始化 SQL 中的 `cart_items` 表尚未包含这两个字段。
+
+### 当前修复
+- 已更新 `deploy/mysql/001_init_schema.sql`。
+- 已为 `cart_items` 增加：
+  - `product_name`
+  - `price`
+
+### 当前影响
+- 初始化数据库后，购物车读取模型与订单编排模型将不再发生字段缺失。
+- 该修复避免了运行时读取购物车时的结构不一致问题。

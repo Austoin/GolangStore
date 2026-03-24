@@ -37,6 +37,7 @@
 - `internal/cart/mysql_repo.go` 已落地，购物车读取已具备 MySQL 仓储实现
 - `internal/order/mysql_repo.go` 已落地，订单创建与订单查询已具备 MySQL 仓储实现
 - `cmd/order-service` 运行时装配已切换到 MySQL 仓储实现
+- `cart_items` 初始化表结构已补齐 `product_name`、`price`，与当前仓储/编排模型保持一致
 
 详细过程见：
 
