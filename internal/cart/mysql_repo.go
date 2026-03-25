@@ -51,14 +51,15 @@ func (r MySQLRepository) Save(item Item) Item {
 		return item
 	}
 
-	row = mysqlRow{
-		UserID:      item.UserID,
-		ProductID:   item.ProductID,
-		ProductName: item.ProductName,
-		Price:       item.Price,
-		Quantity:    item.Quantity,
-		Checked:     item.Checked,
-	}
+	row = mysqlRow{UserID: item.UserID, ProductID: item.ProductID, ProductName: item.ProductName, Price: item.Price, Quantity: item.Quantity, Checked: item.Checked}
 	r.db.Table("cart_items").Create(&row)
 	return item
+}
+
+func (r MySQLRepository) Delete(userID uint64, productID uint64) {
+	r.db.Table("cart_items").Where("user_id = ? AND product_id = ?", userID, productID).Delete(nil)
+}
+
+func (r MySQLRepository) SetChecked(userID uint64, productID uint64, checked bool) {
+	r.db.Table("cart_items").Where("user_id = ? AND product_id = ?", userID, productID).Update("checked", checked)
 }

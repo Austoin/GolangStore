@@ -79,3 +79,58 @@ func TestMySQLRepositorySaveUpdatesExistingItem(t *testing.T) {
 		t.Fatalf("expected quantity 3, got %d", items[0].Quantity)
 	}
 }
+
+
+func TestMySQLRepositoryDelete(t *testing.T) {
+	db, err := gorm.Open(sqlite.Open("file::memory:?cache=shared"), &gorm.Config{})
+	if err != nil {
+		t.Fatalf("expected sqlite db, got %v", err)
+	}
+	if err := db.Exec(`
+		CREATE TABLE cart_items (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			user_id INTEGER NOT NULL,
+			product_id INTEGER NOT NULL,
+			quantity INTEGER NOT NULL,
+			checked INTEGER NOT NULL,
+			product_name TEXT NOT NULL,
+			price INTEGER NOT NULL
+		)
+	`).Error; err != nil {
+		t.Fatalf("expected schema creation, got %v", err)
+	}
+	repo := NewMySQLRepository(db)
+	repo.Save(Item{UserID: 1, ProductID: 11, ProductName: "phone", Price: 100, Quantity: 1, Checked: true})
+	repo.Delete(1, 11)
+	items := repo.ListByUserID(1)
+	if len(items) != 0 {
+		t.Fatalf("expected 0 items, got %d", len(items))
+	}
+}
+
+func TestMySQLRepositoryToggleChecked(t *testing.T) {
+	db, err := gorm.Open(sqlite.Open("file::memory:?cache=shared"), &gorm.Config{})
+	if err != nil {
+		t.Fatalf("expected sqlite db, got %v", err)
+	}
+	if err := db.Exec(`
+		CREATE TABLE cart_items (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			user_id INTEGER NOT NULL,
+			product_id INTEGER NOT NULL,
+			quantity INTEGER NOT NULL,
+			checked INTEGER NOT NULL,
+			product_name TEXT NOT NULL,
+			price INTEGER NOT NULL
+		)
+	`).Error; err != nil {
+		t.Fatalf("expected schema creation, got %v", err)
+	}
+	repo := NewMySQLRepository(db)
+	repo.Save(Item{UserID: 1, ProductID: 11, ProductName: "phone", Price: 100, Quantity: 1, Checked: true})
+	repo.SetChecked(1, 11, false)
+	items := repo.ListByUserID(1)
+	if len(items) != 1 || items[0].Checked {
+		t.Fatal("expected item checked=false")
+	}
+}

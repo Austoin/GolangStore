@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { AppHeader } from "../../../components/shared/AppHeader";
 import { CartSummary } from "../../../components/shop/CartSummary";
 import { PrimaryButton } from "../../../components/shared/PrimaryButton";
-import { createOrderFromCartHttp, listCartItemsHttp } from "../../../lib/adapters/httpAdapter";
+import { createOrderFromCartHttp, deleteCartItemHttp, listCartItemsHttp, setCartItemCheckedHttp } from "../../../lib/adapters/httpAdapter";
 
 type CartPageProps = {
   searchParams: Promise<{ error?: string }>;
@@ -19,10 +19,22 @@ async function submitOrder() {
   }
 }
 
+async function deleteItem(formData: FormData) {
+  "use server";
+  await deleteCartItemHttp(1, Number(formData.get("product_id")));
+  redirect("/shop/cart");
+}
+
+async function toggleChecked(formData: FormData) {
+  "use server";
+  await setCartItemCheckedHttp(1, Number(formData.get("product_id")), formData.get("checked") === "true");
+  redirect("/shop/cart");
+}
+
 export default async function CartPage({ searchParams }: CartPageProps) {
   const params = await searchParams;
   const items = await listCartItemsHttp(1);
-  const total = items.reduce((sum: number, item: { price: number; quantity: number }) => sum + item.price * item.quantity, 0);
+  const total = items.filter((item: { checked: boolean }) => item.checked).reduce((sum: number, item: { price: number; quantity: number }) => sum + item.price * item.quantity, 0);
 
   return (
     <main className="app-shell">
@@ -31,14 +43,27 @@ export default async function CartPage({ searchParams }: CartPageProps) {
       <section className="metric-card">
         <h2 className="section-title">购物车商品</h2>
         <table className="panel-table">
-          <thead><tr><th>商品</th><th>单价</th><th>数量</th><th>小计</th></tr></thead>
+          <thead><tr><th>勾选</th><th>商品</th><th>单价</th><th>数量</th><th>小计</th><th>操作</th></tr></thead>
           <tbody>
-            {items.map((item: { productId: number; productName: string; price: number; quantity: number }) => (
+            {items.map((item: { productId: number; productName: string; price: number; quantity: number; checked: boolean }) => (
               <tr key={item.productId}>
+                <td>
+                  <form action={toggleChecked}>
+                    <input type="hidden" name="product_id" value={item.productId} />
+                    <input type="hidden" name="checked" value={String(!item.checked)} />
+                    <button type="submit">{item.checked ? '已选' : '未选'}</button>
+                  </form>
+                </td>
                 <td>{item.productName}</td>
                 <td>¥{(item.price / 100).toFixed(2)}</td>
                 <td>{item.quantity}</td>
                 <td>¥{((item.price * item.quantity) / 100).toFixed(2)}</td>
+                <td>
+                  <form action={deleteItem}>
+                    <input type="hidden" name="product_id" value={item.productId} />
+                    <button type="submit">删除</button>
+                  </form>
+                </td>
               </tr>
             ))}
           </tbody>

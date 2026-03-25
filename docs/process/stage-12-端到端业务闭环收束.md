@@ -635,3 +635,39 @@
 - 已执行：`curl -I http://127.0.0.1:3000/shop/cart`
 - 已执行：数据库回查 `cart_items.quantity`
 - 结果：页面 `200 OK`，数据库中数量 = `3`
+
+
+## 商品详情与购物车交互增强
+
+### 已完成内容
+- 已更新：
+  - `frontend/app/shop/products/[id]/page.tsx`
+  - `frontend/components/shop/ProductDetailPanel.tsx`
+  - `frontend/app/shop/cart/page.tsx`
+  - `frontend/lib/adapters/httpAdapter.ts`
+  - `internal/cart/repo.go`
+  - `internal/cart/service.go`
+  - `internal/cart/handler.go`
+  - `internal/cart/mysql_repo.go`
+  - `cmd/cart-service/router.go`
+  - `README.md`
+
+### 当前实现结果
+- 商品详情页已支持：
+  - 数量选择
+  - 真实加入购物车
+- 购物车已支持：
+  - 删除商品
+  - 勾选切换
+  - 数量、小计、总计展示
+- 购物车后端已支持：
+  - 删除接口
+  - 勾选切换接口
+
+### 当前验证结果
+- 已执行：`bash scripts/run-all.sh`
+- 已验证：
+  - `/shop/products/101` -> `200 OK`
+  - `/shop/cart` -> `200 OK`
+  - `PATCH /carts/1/101/checked` -> `204`
+  - `DELETE /carts/1/101` -> `204`

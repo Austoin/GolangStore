@@ -45,3 +45,18 @@ export async function listOrdersHttp() {
   if (!response.ok) throw new Error(`failed to list orders: ${response.status}`);
   return response.json();
 }
+
+export async function deleteCartItemHttp(userId: number, productId: number) {
+  const response = await fetch(`${CART_BASE_URL}/carts/${userId}/${productId}`, { method: "DELETE", cache: "no-store" });
+  if (!response.ok) throw new Error(`failed to delete cart item: ${response.status}`);
+}
+
+export async function setCartItemCheckedHttp(userId: number, productId: number, checked: boolean) {
+  const response = await fetch(`${CART_BASE_URL}/carts/${userId}/${productId}/checked`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ checked }),
+    cache: "no-store",
+  });
+  if (!response.ok) throw new Error(`failed to update cart checked: ${response.status}`);
+}

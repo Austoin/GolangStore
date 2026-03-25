@@ -27,3 +27,11 @@ func (s Service) ListCheckedItems(userID uint64) []Item {
 func (s Service) AddItem(item Item) Item {
 	return s.repo.Save(item)
 }
+
+func (s Service) DeleteItem(userID uint64, productID uint64) {
+	s.repo.Delete(userID, productID)
+}
+
+func (s Service) SetItemChecked(userID uint64, productID uint64, checked bool) {
+	s.repo.SetChecked(userID, productID, checked)
+}

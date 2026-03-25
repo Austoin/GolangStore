@@ -14,6 +14,8 @@ func newRouter(handler cart.Handler) *gin.Engine {
 	})
 	router.GET("/carts/:userId", handler.ListByUserID)
 	router.POST("/carts", handler.AddItem)
+	router.DELETE("/carts/:userId/:productId", handler.DeleteItem)
+	router.PATCH("/carts/:userId/:productId/checked", handler.SetChecked)
 
 	return router
 }
