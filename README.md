@@ -127,3 +127,4 @@ npm run dev
 - `run-all.sh` 已增强启动期提示，可在前端预热阶段直接看到地址与等待进度
 
 - `/shop/products/[id]` 已切到真实商品详情接口 `GET /products/:id`
+- `/shop/cart` 已切到真实购物车接口，并可触发真实下单

@@ -431,3 +431,18 @@
 
 ### 当前验证结果
 - 待通过 `/shop/products/101` 页面访问验证。
+
+
+## 前台真实联调：Task 3 购物车与下单
+
+### 已完成内容
+- 已更新：
+  - `frontend/lib/adapters/httpAdapter.ts`
+  - `frontend/components/shop/CartSummary.tsx`
+  - `frontend/app/shop/cart/page.tsx`
+  - `README.md`
+
+### 当前实现结果
+- 购物车页已切到真实购物车接口。
+- 购物车页已可直接触发真实 `/orders/from-cart` 下单。
+- 下单完成后会跳转到 `/shop/orders`。
