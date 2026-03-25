@@ -4,30 +4,42 @@ import { PrimaryButton } from "../../components/shared/PrimaryButton";
 import { listProductsHttp } from "../../lib/adapters/httpAdapter";
 import { redirect } from "next/navigation";
 
+type ShopPageProps = {
+  searchParams: Promise<{ success?: string; error?: string }>;
+};
+
 async function addToCart(formData: FormData) {
   "use server";
-  await fetch("http://127.0.0.1:8083/carts", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      user_id: 1,
-      product_id: Number(formData.get("product_id")),
-      product_name: String(formData.get("product_name")),
-      price: Number(formData.get("price")),
-      quantity: Number(formData.get("quantity")),
-      checked: true,
-    }),
-    cache: "no-store",
-  });
-  redirect("/shop/cart");
+  try {
+    await fetch("http://127.0.0.1:8083/carts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        user_id: 1,
+        product_id: Number(formData.get("product_id")),
+        product_name: String(formData.get("product_name")),
+        price: Number(formData.get("price")),
+        quantity: Number(formData.get("quantity")),
+        checked: true,
+      }),
+      cache: "no-store",
+    });
+    redirect("/shop?success=已加入购物车");
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "加入购物车失败";
+    redirect(`/shop?error=${encodeURIComponent(message)}`);
+  }
 }
 
-export default async function ShopPage() {
+export default async function ShopPage({ searchParams }: ShopPageProps) {
   const products = await listProductsHttp();
+  const params = await searchParams;
 
   return (
     <main className="app-shell">
       <AppHeader />
+      {params.success ? <section className="metric-card"><p style={{ color: "#256b3f" }}>{decodeURIComponent(params.success)}</p></section> : null}
+      {params.error ? <section className="metric-card"><p style={{ color: "#a0382b" }}>{decodeURIComponent(params.error)}</p></section> : null}
       <section className="shop-hero">
         <div className="metric-card">
           <p className="shop-kicker">Modern Commerce Hall</p>

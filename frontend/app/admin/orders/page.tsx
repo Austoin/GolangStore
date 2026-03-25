@@ -1,10 +1,19 @@
 import Link from "next/link";
 import { OrderTable } from "../../../components/admin/OrderTable";
 import { AppHeader } from "../../../components/shared/AppHeader";
+import { PrimaryButton } from "../../../components/shared/PrimaryButton";
 import { listOrdersHttp } from "../../../lib/adapters/httpAdapter";
 
-export default async function AdminOrdersPage() {
+type AdminOrdersPageProps = {
+  searchParams: Promise<{ keyword?: string }>;
+};
+
+export default async function AdminOrdersPage({ searchParams }: AdminOrdersPageProps) {
+  const params = await searchParams;
   const orders = await listOrdersHttp();
+  const keyword = (params.keyword ?? "").trim().toLowerCase();
+  const filtered = keyword ? orders.filter((item: { orderNo?: string }) => (item.orderNo ?? "").toLowerCase().includes(keyword)) : orders;
+
   return (
     <main className="app-shell">
       <AppHeader />
@@ -19,7 +28,13 @@ export default async function AdminOrdersPage() {
           </nav>
         </aside>
         <section className="admin-main">
-          <OrderTable orders={orders} />
+          <section className="metric-card">
+            <form className="inline-stack" method="GET">
+              <input name="keyword" placeholder="按订单号筛选" defaultValue={params.keyword ?? ""} style={{ padding: 10, width: 220 }} />
+              <PrimaryButton type="submit">筛选</PrimaryButton>
+            </form>
+          </section>
+          <OrderTable orders={filtered} />
         </section>
       </div>
     </main>

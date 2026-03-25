@@ -5,6 +5,10 @@ import { AppHeader } from "../../../components/shared/AppHeader";
 import { PrimaryButton } from "../../../components/shared/PrimaryButton";
 import { listProductsHttp } from "../../../lib/adapters/httpAdapter";
 
+type AdminProductsPageProps = {
+  searchParams: Promise<{ keyword?: string }>;
+};
+
 async function createProduct(formData: FormData) {
   "use server";
   await fetch("http://127.0.0.1:8081/products", {
@@ -22,8 +26,12 @@ async function createProduct(formData: FormData) {
   redirect("/admin/products");
 }
 
-export default async function AdminProductsPage() {
+export default async function AdminProductsPage({ searchParams }: AdminProductsPageProps) {
+  const params = await searchParams;
   const products = await listProductsHttp();
+  const keyword = (params.keyword ?? "").trim().toLowerCase();
+  const filtered = keyword ? products.filter((item) => item.name.toLowerCase().includes(keyword)) : products;
+
   return (
     <main className="app-shell">
       <AppHeader />
@@ -38,8 +46,14 @@ export default async function AdminProductsPage() {
           </nav>
         </aside>
         <section className="admin-main">
+          <section className="metric-card">
+            <form className="inline-stack" method="GET">
+              <input name="keyword" placeholder="按商品名筛选" defaultValue={params.keyword ?? ""} style={{ padding: 10, width: 220 }} />
+              <PrimaryButton type="submit">筛选</PrimaryButton>
+            </form>
+          </section>
           <ProductAdminTable
-            products={products}
+            products={filtered}
             createAction={
               <form action={createProduct} className="inline-stack">
                 <input name="name" placeholder="商品名" style={{ padding: 10 }} />

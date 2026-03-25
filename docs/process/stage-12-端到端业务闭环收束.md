@@ -809,3 +809,27 @@
   - `/admin/inventory`
   - `/admin/orders`
 - 以上全部通过
+
+
+## 反馈与筛选增强
+
+### 已完成内容
+- 已更新：
+  - `frontend/app/shop/page.tsx`
+  - `frontend/app/admin/products/page.tsx`
+  - `frontend/app/admin/orders/page.tsx`
+  - `README.md`
+
+### 当前实现结果
+- 前台首页已支持加购成功/失败反馈。
+- 后台商品页已支持按商品名筛选。
+- 后台订单页已支持按订单号筛选。
+- 后台订单筛选已兼容空 `orderNo` 数据，避免页面 500。
+
+### 当前验证结果
+- 已执行：`curl -I http://127.0.0.1:3000/shop?success=test`
+- 结果：`200 OK`
+- 已执行：`curl -I http://127.0.0.1:3000/admin/products?keyword=phone`
+- 结果：`200 OK`
+- 已执行：`curl -I http://127.0.0.1:3000/admin/orders?keyword=O1001`
+- 结果：`200 OK`
