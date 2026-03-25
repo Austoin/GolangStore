@@ -3,10 +3,6 @@ import { AppHeader } from "../../../../components/shared/AppHeader";
 import { ProductDetailPanel } from "../../../../components/shop/ProductDetailPanel";
 import { getProductDetailHttp } from "../../../../lib/adapters/httpAdapter";
 
-type ProductDetailPageProps = {
-  params: Promise<{ id: string }>;
-};
-
 async function addToCart(formData: FormData) {
   "use server";
   await fetch("http://127.0.0.1:8083/carts", {
@@ -24,6 +20,10 @@ async function addToCart(formData: FormData) {
   });
   redirect("/shop/cart");
 }
+
+type ProductDetailPageProps = {
+  params: Promise<{ id: string }>;
+};
 
 export default async function ProductDetailPage({ params }: ProductDetailPageProps) {
   const { id } = await params;

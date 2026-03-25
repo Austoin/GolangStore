@@ -739,3 +739,38 @@
 - 已执行：`go test ./internal/product`
 - 已执行：`POST /products`
 - 已验证：`/admin/products -> 200 OK`
+
+
+## 后台商品管理与前台现代化重排版
+
+### 已完成内容
+- 已更新：
+  - `frontend/app/shop/page.tsx`
+  - `frontend/app/shop/products/[id]/page.tsx`
+  - `frontend/components/shop/ProductCard.tsx`
+  - `frontend/components/shop/ProductDetailPanel.tsx`
+  - `frontend/components/admin/ProductAdminTable.tsx`
+  - `frontend/app/admin/products/page.tsx`
+  - `internal/product/*`
+  - `cmd/product-service/router.go`
+  - `README.md`
+
+### 当前实现结果
+- 后台商品管理页已支持：
+  - 商品名输入
+  - 描述输入
+  - 价格输入
+  - 库存数量输入
+  - 真实提交新增商品
+- 前台首页已重做为更明确的现代电商展厅布局。
+- 商品详情页已支持数量选择和真实加购。
+
+### 当前验证结果
+- 已执行：`POST /products`
+- 结果：`201 Created`
+- 已执行：`curl -I http://127.0.0.1:3000/admin/products`
+- 结果：`200 OK`
+- 已执行：`curl -I http://127.0.0.1:3000/shop`
+- 结果：`200 OK`
+- 已执行：`curl -I http://127.0.0.1:3000/shop/products/101`
+- 结果：`200 OK`
