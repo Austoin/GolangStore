@@ -49,6 +49,7 @@
 - `scripts/demo.sh` 已创建，但当前验证表明需要先让 `start.sh` 同时启动 `cart-service`
 - 当前已完成端到端闭环验证：`bash scripts/start.sh && bash scripts/demo.sh` 可成功完成商品、购物车、下单、订单落库、库存扣减验证
 - `frontend/` Next.js 项目骨架已创建，前后台可视化面板开始进入实现阶段
+- `frontend/components/shared` 已建立共享设计系统基础组件
 
 详细过程见：
 

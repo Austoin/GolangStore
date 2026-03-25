@@ -225,6 +225,21 @@
 - Next.js 最小骨架已建立。
 - 首页已提供前台 `/shop` 和后台 `/admin` 的入口占位。
 
+## 前端实现：Task 2 共享设计系统
+
+### 已完成内容
+- 已创建：
+  - `frontend/components/shared/AppHeader.tsx`
+  - `frontend/components/shared/PrimaryButton.tsx`
+  - `frontend/components/shared/StatusBadge.tsx`
+  - `frontend/components/shared/MetricCard.tsx`
+- 已更新：
+  - `frontend/app/globals.css`
+
+### 当前结果
+- 前端共享组件基础集已建立。
+- 全局样式变量已可支撑前后台统一视觉。
+
 ### Task 5：一键演示脚本（最新业务阻塞）
 - 修复 `start.sh` 后，三服务已能同时健康启动。
 - 重新执行 `bash scripts/demo.sh` 后，`POST /orders/from-cart` 仍返回 `400`。
