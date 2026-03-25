@@ -318,6 +318,36 @@
 - 前端骨架、共享组件、前后台页面、mock adapter 已完成。
 - 前端当前已可运行并访问主要入口页面。
 
+## 运行脚本收口
+
+### 已完成内容
+- 已创建：
+  - `scripts/run-all.sh`
+  - `scripts/stop-all.sh`
+
+### 当前实现结果
+- `run-all.sh` 会：
+  - 启动 MySQL、Redis
+  - 启动 `product-service`、`cart-service`、`order-service`
+  - 安装前端依赖（如缺失）
+  - 启动 Next.js 前端
+  - 验证 `/`、`/shop`、`/admin` 可访问
+- `stop-all.sh` 会：
+  - 停止 3000、8081、8082、8083 端口上的进程
+  - 停止 MySQL 与 Redis 容器
+
+### 当前验证结果
+- 已执行：`bash scripts/run-all.sh`
+- 结果：通过
+- 已执行：`bash scripts/stop-all.sh`
+- 结果：通过
+
+### 最终结论
+- 当前项目已经具备：
+  - 一键启动前后端
+  - 一键停止前后端
+  - 一键演示核心业务闭环
+
 ### Task 5：一键演示脚本（最新业务阻塞）
 - 修复 `start.sh` 后，三服务已能同时健康启动。
 - 重新执行 `bash scripts/demo.sh` 后，`POST /orders/from-cart` 仍返回 `400`。

@@ -84,6 +84,18 @@ bash scripts/start.sh
 bash scripts/demo.sh
 ```
 
+### 一键启动前后端
+
+```bash
+bash scripts/run-all.sh
+```
+
+### 一键停止前后端
+
+```bash
+bash scripts/stop-all.sh
+```
+
 ### 前端开发
 
 ```bash
@@ -102,3 +114,4 @@ npm run dev
   - `http://127.0.0.1:3000/`
   - `http://127.0.0.1:3000/shop`
   - `http://127.0.0.1:3000/admin`
+- 已验证一键启动脚本：`bash scripts/run-all.sh`
