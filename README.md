@@ -48,6 +48,7 @@
 - `internal/order` 已接入库存校验与扣减逻辑，下单前会检查库存并在成功后扣减库存
 - `scripts/demo.sh` 已创建，但当前验证表明需要先让 `start.sh` 同时启动 `cart-service`
 - 当前已完成端到端闭环验证：`bash scripts/start.sh && bash scripts/demo.sh` 可成功完成商品、购物车、下单、订单落库、库存扣减验证
+- `frontend/` Next.js 项目骨架已创建，前后台可视化面板开始进入实现阶段
 
 详细过程见：
 

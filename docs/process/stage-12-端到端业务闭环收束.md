@@ -207,6 +207,24 @@
   - 可一键启动查看效果
   - 可一键演示真实业务结果
 
+## 前端实现：Task 1 初始化骨架
+
+### 已完成内容
+- 已创建：
+  - `frontend/package.json`
+  - `frontend/tsconfig.json`
+  - `frontend/next.config.js`
+  - `frontend/next-env.d.ts`
+  - `frontend/app/layout.tsx`
+  - `frontend/app/globals.css`
+  - `frontend/app/page.tsx`
+- 已同步更新：`README.md`
+
+### 当前结果
+- `frontend/` 目录已存在。
+- Next.js 最小骨架已建立。
+- 首页已提供前台 `/shop` 和后台 `/admin` 的入口占位。
+
 ### Task 5：一键演示脚本（最新业务阻塞）
 - 修复 `start.sh` 后，三服务已能同时健康启动。
 - 重新执行 `bash scripts/demo.sh` 后，`POST /orders/from-cart` 仍返回 `400`。

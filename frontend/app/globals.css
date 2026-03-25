@@ -1,0 +1,26 @@
+:root {
+  --bg: #f3f0ea;
+  --surface: #fffdfa;
+  --text: #1f1b17;
+  --muted: #6c6258;
+  --accent: #b65e3c;
+  --line: #d8cec2;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(180deg, #efe8de 0%, #f7f3ed 100%);
+  color: var(--text);
+  font-family: "Segoe UI", "PingFang SC", sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
