@@ -257,6 +257,23 @@
 - 前台四页路由骨架已完成。
 - 商品列表、商品详情、购物车、订单视图都有页面占位。
 
+## 前端实现：Task 4 admin 路由
+
+### 已完成内容
+- 已创建：
+  - `frontend/app/admin/page.tsx`
+  - `frontend/app/admin/products/page.tsx`
+  - `frontend/app/admin/inventory/page.tsx`
+  - `frontend/app/admin/orders/page.tsx`
+  - `frontend/components/admin/DashboardMetrics.tsx`
+  - `frontend/components/admin/ProductAdminTable.tsx`
+  - `frontend/components/admin/InventoryTable.tsx`
+  - `frontend/components/admin/OrderTable.tsx`
+
+### 当前结果
+- 后台四页路由骨架已完成。
+- Dashboard、商品管理、库存面板、订单管理都已有页面占位。
+
 ### Task 5：一键演示脚本（最新业务阻塞）
 - 修复 `start.sh` 后，三服务已能同时健康启动。
 - 重新执行 `bash scripts/demo.sh` 后，`POST /orders/from-cart` 仍返回 `400`。

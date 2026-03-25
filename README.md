@@ -51,6 +51,7 @@
 - `frontend/` Next.js 项目骨架已创建，前后台可视化面板开始进入实现阶段
 - `frontend/components/shared` 已建立共享设计系统基础组件
 - `frontend/app/shop` 四个前台页面骨架已完成
+- `frontend/app/admin` 四个后台页面骨架已完成
 
 详细过程见：
 
