@@ -74,3 +74,27 @@
 - `docs/plans/2026-03-24-cart-order-persistence-plan.md`
 - `docs/process/stage-12-端到端业务闭环收束.md`
 - `docs/plans/2026-03-25-end-to-end-business-completion-plan.md`
+
+## 当前运行方式
+
+### 后端演示
+
+```bash
+bash scripts/start.sh
+bash scripts/demo.sh
+```
+
+### 前端开发
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+前端当前状态：
+
+- 一个 Next.js 项目
+- 两套入口：`/shop` 与 `/admin`
+- 当前通过 mock adapter 驱动页面
+- 后续可替换为真实 HTTP adapter

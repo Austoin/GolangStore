@@ -293,6 +293,19 @@
 - `/shop` 页面已通过 adapter 层读取 mock 数据。
 - 后续可替换为真实 HTTP adapter 而不改页面结构。
 
+## 前端实现：Task 6 文档收口
+
+### 已完成内容
+- 已更新：`README.md`
+- 已完善当前前端运行说明与项目状态说明
+
+### 当前结果
+- README 已包含前后端当前运行方式
+- 前端当前交付边界已明确：
+  - Next.js 单项目
+  - `/shop` 与 `/admin` 双入口
+  - mock adapter 模式
+
 ### Task 5：一键演示脚本（最新业务阻塞）
 - 修复 `start.sh` 后，三服务已能同时健康启动。
 - 重新执行 `bash scripts/demo.sh` 后，`POST /orders/from-cart` 仍返回 `400`。
