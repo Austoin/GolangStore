@@ -129,3 +129,5 @@ npm run dev
 - `/shop/products/[id]` 已切到真实商品详情接口 `GET /products/:id`
 - `/shop/cart` 已切到真实购物车接口，并可触发真实下单
 - `/shop/orders` 已切到真实订单列表接口 `GET /orders`
+- `/admin`、`/admin/products`、`/admin/inventory`、`/admin/orders` 已切到真实后端数据驱动
+- 当前前台与后台都已能通过真实后端接口展示核心业务数据

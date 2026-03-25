@@ -478,3 +478,38 @@
 - 结果：通过
 - 已执行：`curl -I http://127.0.0.1:3000/shop/orders`
 - 结果：`200 OK`
+
+
+## 后台真实联调
+
+### 已完成内容
+- 已更新：
+  - `frontend/components/admin/DashboardMetrics.tsx`
+  - `frontend/components/admin/ProductAdminTable.tsx`
+  - `frontend/components/admin/InventoryTable.tsx`
+  - `frontend/components/admin/OrderTable.tsx`
+  - `frontend/app/admin/page.tsx`
+  - `frontend/app/admin/products/page.tsx`
+  - `frontend/app/admin/inventory/page.tsx`
+  - `frontend/app/admin/orders/page.tsx`
+  - `README.md`
+
+### 当前实现结果
+- `/admin/products` 已使用真实商品接口数据。
+- `/admin/inventory` 已使用真实库存数据。
+- `/admin/orders` 已使用真实订单数据。
+- `/admin` 已使用真实商品数、订单数、低库存数进行汇总。
+
+
+### 当前验证结果
+- 已执行：`bash scripts/run-all.sh`
+- 已验证：
+  - `/admin` -> `200 OK`
+  - `/admin/products` -> `200 OK`
+  - `/admin/inventory` -> `200 OK`
+  - `/admin/orders` -> `200 OK`
+
+### 当前阶段总结果
+- 用户前台 `/shop` 已基本切到真实后端接口。
+- 管理后台 `/admin` 已切到真实后端数据驱动。
+- 当前前后台都已具备真实数据展示能力。
