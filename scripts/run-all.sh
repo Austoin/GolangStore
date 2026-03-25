@@ -18,6 +18,7 @@ die() {
 
 wait_for_http() {
     local url="$1"
+    local label="$2"
     local retries=40
     local count=0
 
@@ -27,8 +28,14 @@ wait_for_http() {
             return 0
         fi
         ((count+=1))
+        log "waiting for $label ($count/$retries): $url"
         sleep 2
     done
+
+    if [[ -f "$FRONTEND_LOG" ]]; then
+        log "frontend log tail:"
+        tail -n 40 "$FRONTEND_LOG" >&2 || true
+    fi
 
     die "http endpoint did not become ready: $url"
 }
@@ -71,6 +78,10 @@ start_frontend() {
     local pid=$!
     echo "$pid" >"$FRONTEND_PID_FILE"
     log "frontend pid=$pid"
+    log "frontend root: http://127.0.0.1:3000/"
+    log "frontend shop: http://127.0.0.1:3000/shop"
+    log "frontend admin: http://127.0.0.1:3000/admin"
+    log "first startup may take longer because Next.js can download SWC"
 }
 
 main() {
@@ -81,9 +92,9 @@ main() {
     bash "$SCRIPT_DIR/start.sh"
     start_frontend
 
-    wait_for_http http://127.0.0.1:3000/
-    wait_for_http http://127.0.0.1:3000/shop
-    wait_for_http http://127.0.0.1:3000/admin
+    wait_for_http http://127.0.0.1:3000/ "frontend root"
+    wait_for_http http://127.0.0.1:3000/shop "shop page"
+    wait_for_http http://127.0.0.1:3000/admin "admin page"
 
     log "all services are ready"
     log "frontend log: $FRONTEND_LOG"

@@ -342,6 +342,22 @@
 - 已执行：`bash scripts/stop-all.sh`
 - 结果：通过
 
+### 启动体验优化
+- 已更新：`scripts/run-all.sh`
+- 当前增强点：
+  - 前端启动后立刻输出访问地址
+  - 等待 `/`、`/shop`、`/admin` 时输出明确进度
+  - 若超时会自动打印前端日志尾部
+  - 明确提示首次启动可能因 Next.js 下载 SWC 较慢
+
+### 当前验证结果
+- 已重新执行：`bash scripts/run-all.sh`
+- 结果：通过
+- 当前启动输出已可直接看到：
+  - `frontend root`
+  - `frontend shop`
+  - `frontend admin`
+
 ### 最终结论
 - 当前项目已经具备：
   - 一键启动前后端

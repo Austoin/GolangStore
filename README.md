@@ -90,6 +90,14 @@ bash scripts/demo.sh
 bash scripts/run-all.sh
 ```
 
+该脚本当前会：
+
+- 启动 MySQL、Redis
+- 启动 `product-service`、`cart-service`、`order-service`
+- 启动前端 Next.js
+- 直接打印前端访问地址
+- 等待 `/`、`/shop`、`/admin` 全部就绪
+
 ### 一键停止前后端
 
 ```bash
@@ -115,3 +123,4 @@ npm run dev
   - `http://127.0.0.1:3000/shop`
   - `http://127.0.0.1:3000/admin`
 - 已验证一键启动脚本：`bash scripts/run-all.sh`
+- `run-all.sh` 已增强启动期提示，可在前端预热阶段直接看到地址与等待进度
