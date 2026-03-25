@@ -569,3 +569,21 @@
   - 可一键停止
   - 可一键演示真实商城核心业务闭环
   - 前后台面板均可体验真实后端数据
+
+
+## 前台/后台交互修复
+
+### 已完成内容
+- 已更新：
+  - `frontend/components/shop/ProductCard.tsx`
+  - `frontend/app/shop/page.tsx`
+  - `frontend/components/admin/OrderTable.tsx`
+  - `internal/product/model.go`
+  - `README.md`
+
+### 当前结果
+- 前台商品卡已支持：
+  - 查看商品
+  - 加入购物车
+- 后台订单表已使用稳定 key 渲染。
+- `/shop`、`/shop/products/101`、`/shop/cart`、`/admin/orders` 当前都可访问。
