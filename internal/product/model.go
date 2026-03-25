@@ -1,12 +1,12 @@
 package product
 
 type Product struct {
-	ID          uint64
-	Name        string
-	Description string
-	Price       uint64
-	Status      uint8
-	Stock       int
+	ID          uint64 `json:"id"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Price       uint64 `json:"price"`
+	Status      uint8  `json:"status"`
+	Stock       int    `json:"stock"`
 }
 
 func (p Product) IsOnSale() bool {

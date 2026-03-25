@@ -513,3 +513,30 @@
 - 用户前台 `/shop` 已基本切到真实后端接口。
 - 管理后台 `/admin` 已切到真实后端数据驱动。
 - 当前前后台都已具备真实数据展示能力。
+
+
+## 前端运行问题修复
+
+### 已修复问题
+- `/shop` 页面商品列表真实联调时，后端返回字段为大写 `ID/Name/...`。
+- 前端 adapter 读取的是小写 `id/name/...`，导致 React 列表 key 警告。
+
+### 当前修复
+- 已为 `internal/product/model.go` 增加 JSON tag：
+  - `id`
+  - `name`
+  - `description`
+  - `price`
+  - `status`
+  - `stock`
+
+### 当前验证结果
+- 已执行：`go test ./internal/product`
+- 已执行：`bash scripts/run-all.sh`
+- 已执行：`curl http://127.0.0.1:8081/products`
+- 当前返回字段已为小写 JSON 键。
+
+### 浏览器控制台中的 hydration 提示说明
+- 当前看到的 `data-redeviation-bs-uid` 来自浏览器扩展注入到 `<html>`。
+- 这类属性不是项目 SSR 代码主动渲染的，不属于当前应用逻辑错误。
+- 若要确认，可在无扩展窗口或禁用相关扩展后再看控制台。

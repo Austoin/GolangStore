@@ -131,3 +131,4 @@ npm run dev
 - `/shop/orders` 已切到真实订单列表接口 `GET /orders`
 - `/admin`、`/admin/products`、`/admin/inventory`、`/admin/orders` 已切到真实后端数据驱动
 - 当前前台与后台都已能通过真实后端接口展示核心业务数据
+- `product-service` 的商品 JSON 输出已统一为前端可直接消费的小写字段
