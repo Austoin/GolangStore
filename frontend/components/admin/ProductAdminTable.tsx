@@ -5,12 +5,15 @@ type ProductAdminTableProps = {
 export function ProductAdminTable({ products }: ProductAdminTableProps) {
   return (
     <section className="metric-card">
-      <h2>商品管理</h2>
-      <ul>
-        {products.map((item) => (
-          <li key={item.id}>{item.name} / ¥{(item.price / 100).toFixed(2)} / {item.status} / 库存 {item.stock}</li>
-        ))}
-      </ul>
+      <h2 className="section-title">商品管理</h2>
+      <table className="panel-table">
+        <thead><tr><th>商品</th><th>价格</th><th>状态</th><th>库存</th></tr></thead>
+        <tbody>
+          {products.map((item) => (
+            <tr key={item.id}><td>{item.name}</td><td>¥{(item.price / 100).toFixed(2)}</td><td>{item.status}</td><td>{item.stock}</td></tr>
+          ))}
+        </tbody>
+      </table>
     </section>
   );
 }

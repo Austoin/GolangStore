@@ -5,12 +5,15 @@ type OrderTableProps = {
 export function OrderTable({ orders }: OrderTableProps) {
   return (
     <section className="metric-card">
-      <h2>订单管理</h2>
-      <ul>
-        {orders.map((item) => (
-          <li key={item.orderNo}>{item.orderNo} / ¥{(item.totalAmount / 100).toFixed(2)} / {item.status} / 明细 {item.items?.length ?? 0}</li>
-        ))}
-      </ul>
+      <h2 className="section-title">订单管理</h2>
+      <table className="panel-table">
+        <thead><tr><th>订单号</th><th>金额</th><th>状态</th><th>订单项数</th></tr></thead>
+        <tbody>
+          {orders.map((item) => (
+            <tr key={item.orderNo}><td>{item.orderNo}</td><td>¥{(item.totalAmount / 100).toFixed(2)}</td><td>{item.status}</td><td>{item.items?.length ?? 0}</td></tr>
+          ))}
+        </tbody>
+      </table>
     </section>
   );
 }

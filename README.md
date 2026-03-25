@@ -132,3 +132,5 @@ npm run dev
 - `/admin`、`/admin/products`、`/admin/inventory`、`/admin/orders` 已切到真实后端数据驱动
 - 当前前台与后台都已能通过真实后端接口展示核心业务数据
 - `product-service` 的商品 JSON 输出已统一为前端可直接消费的小写字段
+- 前后台都已重做为统一设计语言的可操作面板
+- `/shop` 与 `/admin` 当前都已可基于真实后端数据体验核心功能
