@@ -14,7 +14,7 @@ async function addToCart(formData: FormData) {
       product_id: Number(formData.get("product_id")),
       product_name: String(formData.get("product_name")),
       price: Number(formData.get("price")),
-      quantity: 1,
+      quantity: Number(formData.get("quantity")),
       checked: true,
     }),
     cache: "no-store",
@@ -56,7 +56,11 @@ export default async function ShopPage() {
                 <input type="hidden" name="product_id" value={item.id} />
                 <input type="hidden" name="product_name" value={item.name} />
                 <input type="hidden" name="price" value={item.price} />
-                <PrimaryButton type="submit">加入购物车</PrimaryButton>
+                <div className="inline-stack">
+                  <label htmlFor={`qty-${item.id}`}>数量</label>
+                  <input id={`qty-${item.id}`} name="quantity" type="number" min="1" max={item.stock} defaultValue="1" style={{ width: 72, padding: 8 }} />
+                  <PrimaryButton type="submit">加入购物车</PrimaryButton>
+                </div>
               </form>
             }
           />

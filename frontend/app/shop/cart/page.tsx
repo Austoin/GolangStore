@@ -28,6 +28,22 @@ export default async function CartPage({ searchParams }: CartPageProps) {
     <main className="app-shell">
       <AppHeader />
       {params.error ? <section className="metric-card"><p style={{ color: "#a0382b" }}>{decodeURIComponent(params.error)}</p></section> : null}
+      <section className="metric-card">
+        <h2 className="section-title">购物车商品</h2>
+        <table className="panel-table">
+          <thead><tr><th>商品</th><th>单价</th><th>数量</th><th>小计</th></tr></thead>
+          <tbody>
+            {items.map((item: { productId: number; productName: string; price: number; quantity: number }) => (
+              <tr key={item.productId}>
+                <td>{item.productName}</td>
+                <td>¥{(item.price / 100).toFixed(2)}</td>
+                <td>{item.quantity}</td>
+                <td>¥{((item.price * item.quantity) / 100).toFixed(2)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
       <CartSummary
         total={`¥${(total / 100).toFixed(2)}`}
         action={

@@ -39,7 +39,19 @@ func (r MySQLRepository) ListByUserID(userID uint64) []Item {
 }
 
 func (r MySQLRepository) Save(item Item) Item {
-	row := mysqlRow{
+	row := mysqlRow{}
+	err := r.db.Table("cart_items").Where("user_id = ? AND product_id = ?", item.UserID, item.ProductID).First(&row).Error
+	if err == nil {
+		r.db.Table("cart_items").Where("user_id = ? AND product_id = ?", item.UserID, item.ProductID).Updates(map[string]any{
+			"product_name": item.ProductName,
+			"price":       item.Price,
+			"quantity":    item.Quantity,
+			"checked":     item.Checked,
+		})
+		return item
+	}
+
+	row = mysqlRow{
 		UserID:      item.UserID,
 		ProductID:   item.ProductID,
 		ProductName: item.ProductName,

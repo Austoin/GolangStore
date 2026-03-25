@@ -18,8 +18,8 @@ export function ProductCard({ id, name, price, stock, addToCartAction }: Product
       <p className="shop-meta">{price}</p>
       <div className="inline-stack">
         <Link href={`/shop/products/${id}`}>查看商品</Link>
-        {addToCartAction ?? <PrimaryButton>加入购物车</PrimaryButton>}
       </div>
+      <div style={{ marginTop: 12 }}>{addToCartAction ?? <PrimaryButton>加入购物车</PrimaryButton>}</div>
     </article>
   );
 }

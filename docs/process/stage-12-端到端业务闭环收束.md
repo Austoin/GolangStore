@@ -605,3 +605,33 @@
   - 购物车数量 = 2
 - 已访问：`/shop/cart?error=failed%20to%20create%20order%3A%20400`
 - 结果：页面返回 `200 OK`
+
+
+## 数量控制可视化优化
+
+### 已完成内容
+- 已更新：
+  - `frontend/components/shop/ProductCard.tsx`
+  - `frontend/app/shop/page.tsx`
+  - `frontend/app/shop/cart/page.tsx`
+  - `internal/cart/mysql_repo.go`
+  - `internal/cart/mysql_repo_test.go`
+  - `README.md`
+
+### 当前实现结果
+- 商品卡已支持数量输入。
+- 加入购物车时会把数量真实提交到后端。
+- 若购物车中已存在同商品，会更新数量而不是重复插入。
+- 购物车页已展示：
+  - 商品名称
+  - 单价
+  - 数量
+  - 小计
+  - 总计
+
+### 当前验证结果
+- 已执行：`bash scripts/run-all.sh`
+- 已执行：手动调用 `POST /carts`，数量 = 3
+- 已执行：`curl -I http://127.0.0.1:3000/shop/cart`
+- 已执行：数据库回查 `cart_items.quantity`
+- 结果：页面 `200 OK`，数据库中数量 = `3`
