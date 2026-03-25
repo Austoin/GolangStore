@@ -114,3 +114,20 @@ func TestHandlerCreateFromCheckedCartItemsBadRequest(t *testing.T) {
 		t.Fatalf("expected status 400, got %d", resp.Code)
 	}
 }
+
+
+func TestHandlerList(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	handler := NewHandler(NewService(NewMemoryRepository([]Order{{OrderNo: "O1", UserID: 1, Status: StatusPending}}), fakeCartQuery{}, nil))
+
+	router := gin.New()
+	router.GET("/orders", handler.List)
+
+	req := httptest.NewRequest(http.MethodGet, "/orders", nil)
+	resp := httptest.NewRecorder()
+	router.ServeHTTP(resp, req)
+
+	if resp.Code != http.StatusOK {
+		t.Fatalf("expected status 200, got %d", resp.Code)
+	}
+}

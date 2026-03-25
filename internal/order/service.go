@@ -87,3 +87,7 @@ func (s Service) CreateOrderFromCheckedCartItems(userID uint64) (Order, error) {
 
 	return s.repo.Create(entity)
 }
+
+func (s Service) ListOrders() []Order {
+	return s.repo.List()
+}

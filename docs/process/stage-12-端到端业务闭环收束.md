@@ -430,7 +430,8 @@
 - 当前使用真实路由参数 `id` 请求商品详情。
 
 ### 当前验证结果
-- 待通过 `/shop/products/101` 页面访问验证。
+- 已执行：`curl -I http://127.0.0.1:3000/shop/products/101`
+- 结果：`200 OK`
 
 
 ## 前台真实联调：Task 3 购物车与下单
@@ -446,3 +447,34 @@
 - 购物车页已切到真实购物车接口。
 - 购物车页已可直接触发真实 `/orders/from-cart` 下单。
 - 下单完成后会跳转到 `/shop/orders`。
+
+
+## 前台真实联调：Task 4 订单列表
+
+### 已完成内容
+- 已更新：
+  - `internal/order/repo.go`
+  - `internal/order/service.go`
+  - `internal/order/handler.go`
+  - `internal/order/mysql_repo.go`
+  - `internal/order/repo_test.go`
+  - `internal/order/service_test.go`
+  - `internal/order/handler_test.go`
+  - `cmd/order-service/router.go`
+  - `frontend/lib/adapters/httpAdapter.ts`
+  - `frontend/app/shop/orders/page.tsx`
+  - `README.md`
+
+### 当前实现结果
+- `order-service` 已支持：`GET /orders`
+- `/shop/orders` 已切到真实订单列表接口。
+
+### 当前验证结果
+- 已执行：`curl -I http://127.0.0.1:3000/shop/cart`
+- 结果：`200 OK`
+
+### 当前验证结果
+- 已执行：`go test ./internal/order`
+- 结果：通过
+- 已执行：`curl -I http://127.0.0.1:3000/shop/orders`
+- 结果：`200 OK`

@@ -45,3 +45,12 @@ func TestMemoryRepositoryCreate(t *testing.T) {
 		t.Fatalf("expected created and loaded order no to match")
 	}
 }
+
+
+func TestMemoryRepositoryList(t *testing.T) {
+	repo := NewMemoryRepository([]Order{{OrderNo: "O1", UserID: 1, Status: StatusPending}, {OrderNo: "O2", UserID: 2, Status: StatusPaid}})
+	items := repo.List()
+	if len(items) != 2 {
+		t.Fatalf("expected 2 orders, got %d", len(items))
+	}
+}

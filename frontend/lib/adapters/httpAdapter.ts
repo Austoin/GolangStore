@@ -39,3 +39,9 @@ export async function createOrderFromCartHttp(userId: number) {
   if (!response.ok) throw new Error(`failed to create order: ${response.status}`);
   return response.json();
 }
+
+export async function listOrdersHttp() {
+  const response = await fetch(`${ORDER_BASE_URL}/orders`, { cache: "no-store" });
+  if (!response.ok) throw new Error(`failed to list orders: ${response.status}`);
+  return response.json();
+}

@@ -72,3 +72,7 @@ func (h Handler) CreateFromCheckedCartItems(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusCreated, entity)
 }
+
+func (h Handler) List(ctx *gin.Context) {
+	ctx.JSON(http.StatusOK, h.service.ListOrders())
+}

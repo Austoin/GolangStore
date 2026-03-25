@@ -86,3 +86,20 @@ func (r MySQLRepository) Create(order Order) (Order, error) {
 	order.ID = row.ID
 	return order, nil
 }
+
+func (r MySQLRepository) List() []Order {
+	rows := make([]orderRow, 0)
+	r.db.Table("orders").Find(&rows)
+	items := make([]Order, 0, len(rows))
+	for _, row := range rows {
+		items = append(items, Order{
+			ID: row.ID,
+			OrderNo: row.OrderNo,
+			UserID: row.UserID,
+			TotalAmount: row.TotalAmount,
+			Status: row.Status,
+		})
+	}
+
+	return items
+}

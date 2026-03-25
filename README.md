@@ -128,3 +128,4 @@ npm run dev
 
 - `/shop/products/[id]` 已切到真实商品详情接口 `GET /products/:id`
 - `/shop/cart` 已切到真实购物车接口，并可触发真实下单
+- `/shop/orders` 已切到真实订单列表接口 `GET /orders`

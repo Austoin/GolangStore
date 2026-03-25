@@ -144,3 +144,12 @@ func TestServiceCreateOrderFromCheckedCartItemsRejectsInsufficientStock(t *testi
 		t.Fatal("expected insufficient stock error")
 	}
 }
+
+
+func TestServiceListOrders(t *testing.T) {
+	service := NewService(NewMemoryRepository([]Order{{OrderNo: "O1", UserID: 1, Status: StatusPending}}), fakeCartQuery{}, nil)
+	items := service.ListOrders()
+	if len(items) != 1 {
+		t.Fatalf("expected 1 order, got %d", len(items))
+	}
+}

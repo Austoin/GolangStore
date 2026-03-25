@@ -6,6 +6,7 @@ var ErrOrderNotFound = errors.New("order not found")
 
 type Repository interface {
 	GetByOrderNo(orderNo string) (Order, error)
+	List() []Order
 	Create(order Order) (Order, error)
 }
 
@@ -34,4 +35,13 @@ func (r MemoryRepository) GetByOrderNo(orderNo string) (Order, error) {
 func (r MemoryRepository) Create(order Order) (Order, error) {
 	r.items[order.OrderNo] = order
 	return order, nil
+}
+
+func (r MemoryRepository) List() []Order {
+	items := make([]Order, 0, len(r.items))
+	for _, item := range r.items {
+		items = append(items, item)
+	}
+
+	return items
 }
