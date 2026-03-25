@@ -240,6 +240,23 @@
 - 前端共享组件基础集已建立。
 - 全局样式变量已可支撑前后台统一视觉。
 
+## 前端实现：Task 3 shop 路由
+
+### 已完成内容
+- 已创建：
+  - `frontend/app/shop/page.tsx`
+  - `frontend/app/shop/products/[id]/page.tsx`
+  - `frontend/app/shop/cart/page.tsx`
+  - `frontend/app/shop/orders/page.tsx`
+  - `frontend/components/shop/ProductCard.tsx`
+  - `frontend/components/shop/ProductDetailPanel.tsx`
+  - `frontend/components/shop/CartSummary.tsx`
+  - `frontend/components/shop/OrderCard.tsx`
+
+### 当前结果
+- 前台四页路由骨架已完成。
+- 商品列表、商品详情、购物车、订单视图都有页面占位。
+
 ### Task 5：一键演示脚本（最新业务阻塞）
 - 修复 `start.sh` 后，三服务已能同时健康启动。
 - 重新执行 `bash scripts/demo.sh` 后，`POST /orders/from-cart` 仍返回 `400`。
