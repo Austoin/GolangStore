@@ -587,3 +587,21 @@
   - 加入购物车
 - 后台订单表已使用稳定 key 渲染。
 - `/shop`、`/shop/products/101`、`/shop/cart`、`/admin/orders` 当前都可访问。
+
+
+## 购物车提交错误体验优化
+
+### 已完成内容
+- 已更新：`frontend/app/shop/cart/page.tsx`
+- 已同步更新：`README.md`
+
+### 当前实现结果
+- 提交订单失败时，不再直接抛出 Next.js application error 页面。
+- 当前会回到 `/shop/cart?error=...` 并在页面内显示错误信息。
+
+### 当前验证结果
+- 已构造库存不足场景：
+  - 库存 = 1
+  - 购物车数量 = 2
+- 已访问：`/shop/cart?error=failed%20to%20create%20order%3A%20400`
+- 结果：页面返回 `200 OK`
