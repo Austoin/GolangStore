@@ -671,3 +671,71 @@
   - `/shop/cart` -> `200 OK`
   - `PATCH /carts/1/101/checked` -> `204`
   - `DELETE /carts/1/101` -> `204`
+
+
+## 后台商品管理增强
+
+### 已完成内容
+- 已更新：
+  - `internal/product/repo.go`
+  - `internal/product/service.go`
+  - `internal/product/handler.go`
+  - `internal/product/mysql_repo.go`
+  - `cmd/product-service/router.go`
+  - `frontend/components/admin/ProductAdminTable.tsx`
+  - `frontend/app/admin/products/page.tsx`
+  - `README.md`
+
+### 当前实现结果
+- 后端已支持：`POST /products`
+- 后台商品管理页已支持：
+  - 商品名称输入
+  - 商品描述输入
+  - 价格输入
+  - 库存数量输入
+  - 状态输入
+  - 提交新增商品
+
+### 当前验证结果
+- 已执行：`go test ./internal/product`
+- 已执行：`POST /products`
+- 已执行：`curl -I http://127.0.0.1:3000/admin/products`
+- 结果：页面 `200 OK`，后端商品列表已可看到新增商品
+
+## 后台订单面板增强
+
+### 当前结果
+- `/admin/orders` 已展示：
+  - 订单号
+  - 金额
+  - 状态
+  - 订单项数
+
+
+## 后台商品管理可操作化
+
+### 已完成内容
+- 已更新：
+  - `internal/product/repo.go`
+  - `internal/product/service.go`
+  - `internal/product/handler.go`
+  - `internal/product/mysql_repo.go`
+  - `internal/product/handler_test.go`
+  - `cmd/product-service/router.go`
+  - `frontend/components/admin/ProductAdminTable.tsx`
+  - `frontend/app/admin/products/page.tsx`
+  - `README.md`
+
+### 当前实现结果
+- 后端已支持：`POST /products`
+- 后台商品页已支持：
+  - 输入商品名称
+  - 输入描述
+  - 输入价格
+  - 输入库存数量
+  - 提交新增商品
+
+### 当前验证结果
+- 已执行：`go test ./internal/product`
+- 已执行：`POST /products`
+- 已验证：`/admin/products -> 200 OK`

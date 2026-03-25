@@ -14,6 +14,7 @@ func newRouter(handler product.Handler) *gin.Engine {
 	})
 	router.GET("/products", handler.List)
 	router.GET("/products/:id", handler.GetByID)
+	router.POST("/products", handler.Create)
 
 	return router
 }

@@ -7,6 +7,7 @@ var ErrProductNotFound = errors.New("product not found")
 type Repository interface {
 	GetByID(id uint64) (Product, error)
 	List() []Product
+	Create(product Product) Product
 }
 
 type MemoryRepository struct {
@@ -38,4 +39,10 @@ func (r MemoryRepository) List() []Product {
 	}
 
 	return items
+}
+
+func (r MemoryRepository) Create(product Product) Product {
+	product.ID = uint64(len(r.items) + 1)
+	r.items[product.ID] = product
+	return product
 }

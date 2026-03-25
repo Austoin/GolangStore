@@ -15,6 +15,10 @@ func NewHandler(service Service) Handler {
 	return Handler{service: service}
 }
 
+func (h Handler) List(ctx *gin.Context) {
+	ctx.JSON(http.StatusOK, h.service.ListProducts())
+}
+
 func (h Handler) GetByID(ctx *gin.Context) {
 	id, err := strconv.ParseUint(ctx.Param("id"), 10, 64)
 	if err != nil {
@@ -31,6 +35,13 @@ func (h Handler) GetByID(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, item)
 }
 
-func (h Handler) List(ctx *gin.Context) {
-	ctx.JSON(http.StatusOK, h.service.ListProducts())
+func (h Handler) Create(ctx *gin.Context) {
+	var item Product
+	if err := ctx.ShouldBindJSON(&item); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid request"})
+		return
+	}
+
+	created := h.service.CreateProduct(item)
+	ctx.JSON(http.StatusCreated, created)
 }

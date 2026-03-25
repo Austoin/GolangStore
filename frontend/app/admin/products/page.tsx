@@ -1,7 +1,26 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { ProductAdminTable } from "../../../components/admin/ProductAdminTable";
 import { AppHeader } from "../../../components/shared/AppHeader";
+import { PrimaryButton } from "../../../components/shared/PrimaryButton";
 import { listProductsHttp } from "../../../lib/adapters/httpAdapter";
+
+async function createProduct(formData: FormData) {
+  "use server";
+  await fetch("http://127.0.0.1:8081/products", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      name: String(formData.get("name")),
+      description: String(formData.get("description")),
+      price: Number(formData.get("price")),
+      status: Number(formData.get("status")),
+      stock: Number(formData.get("stock")),
+    }),
+    cache: "no-store",
+  });
+  redirect("/admin/products");
+}
 
 export default async function AdminProductsPage() {
   const products = await listProductsHttp();
@@ -19,7 +38,19 @@ export default async function AdminProductsPage() {
           </nav>
         </aside>
         <section className="admin-main">
-          <ProductAdminTable products={products} />
+          <ProductAdminTable
+            products={products}
+            createAction={
+              <form action={createProduct} className="inline-stack">
+                <input name="name" placeholder="商品名" style={{ padding: 10 }} />
+                <input name="description" placeholder="描述" style={{ padding: 10 }} />
+                <input name="price" type="number" placeholder="价格(分)" style={{ padding: 10, width: 120 }} />
+                <input name="stock" type="number" placeholder="库存" style={{ padding: 10, width: 100 }} />
+                <input name="status" type="number" defaultValue="1" style={{ padding: 10, width: 80 }} />
+                <PrimaryButton type="submit">新增商品</PrimaryButton>
+              </form>
+            }
+          />
         </section>
       </div>
     </main>

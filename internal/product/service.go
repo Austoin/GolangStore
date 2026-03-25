@@ -15,3 +15,7 @@ func (s Service) GetProduct(id uint64) (Product, error) {
 func (s Service) ListProducts() []Product {
 	return s.repo.List()
 }
+
+func (s Service) CreateProduct(product Product) Product {
+	return s.repo.Create(product)
+}

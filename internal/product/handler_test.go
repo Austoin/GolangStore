@@ -3,6 +3,7 @@ package product
 import (
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 
 	"github.com/gin-gonic/gin"
@@ -38,5 +39,24 @@ func TestHandlerGetByIDBadRequest(t *testing.T) {
 
 	if resp.Code != http.StatusBadRequest {
 		t.Fatalf("expected status 400, got %d", resp.Code)
+	}
+}
+
+
+func TestHandlerCreate(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	repo := NewMemoryRepository(nil)
+	handler := NewHandler(NewService(repo))
+
+	router := gin.New()
+	router.POST("/products", handler.Create)
+
+	req := httptest.NewRequest(http.MethodPost, "/products", strings.NewReader(`{"name":"phone","description":"smart phone","price":199900,"status":1,"stock":8}`))
+	req.Header.Set("Content-Type", "application/json")
+	resp := httptest.NewRecorder()
+	router.ServeHTTP(resp, req)
+
+	if resp.Code != http.StatusCreated {
+		t.Fatalf("expected status 201, got %d", resp.Code)
 	}
 }

@@ -35,27 +35,7 @@ func (r MySQLRepository) GetByID(id uint64) (Product, error) {
 	var stock stockRow
 	r.db.Table("product_stocks").Where("product_id = ?", id).First(&stock)
 
-	return Product{
-		ID:          prod.ID,
-		Name:        prod.Name,
-		Description: prod.Description,
-		Price:       prod.Price,
-		Status:      prod.Status,
-		Stock:       stock.Stock,
-	}, nil
-}
-
-func (r MySQLRepository) HasEnough(productID uint64, quantity int) bool {
-	var stock stockRow
-	if err := r.db.Table("product_stocks").Where("product_id = ?", productID).First(&stock).Error; err != nil {
-		return false
-	}
-
-	return stock.Stock >= quantity
-}
-
-func (r MySQLRepository) Deduct(productID uint64, quantity int) {
-	r.db.Table("product_stocks").Where("product_id = ?", productID).Update("stock", gorm.Expr("stock - ?", quantity))
+	return Product{ID: prod.ID, Name: prod.Name, Description: prod.Description, Price: prod.Price, Status: prod.Status, Stock: stock.Stock}, nil
 }
 
 func (r MySQLRepository) List() []Product {
@@ -65,15 +45,28 @@ func (r MySQLRepository) List() []Product {
 	for _, row := range rows {
 		var stock stockRow
 		r.db.Table("product_stocks").Where("product_id = ?", row.ID).First(&stock)
-		items = append(items, Product{
-			ID: row.ID,
-			Name: row.Name,
-			Description: row.Description,
-			Price: row.Price,
-			Status: row.Status,
-			Stock: stock.Stock,
-		})
+		items = append(items, Product{ID: row.ID, Name: row.Name, Description: row.Description, Price: row.Price, Status: row.Status, Stock: stock.Stock})
 	}
-
 	return items
+}
+
+func (r MySQLRepository) Create(product Product) Product {
+	prod := productRow{Name: product.Name, Description: product.Description, Price: product.Price, Status: product.Status}
+	r.db.Table("products").Create(&prod)
+	stock := stockRow{ProductID: prod.ID, Stock: product.Stock}
+	r.db.Table("product_stocks").Create(&stock)
+	product.ID = prod.ID
+	return product
+}
+
+func (r MySQLRepository) HasEnough(productID uint64, quantity int) bool {
+	var stock stockRow
+	if err := r.db.Table("product_stocks").Where("product_id = ?", productID).First(&stock).Error; err != nil {
+		return false
+	}
+	return stock.Stock >= quantity
+}
+
+func (r MySQLRepository) Deduct(productID uint64, quantity int) {
+	r.db.Table("product_stocks").Where("product_id = ?", productID).Update("stock", gorm.Expr("stock - ?", quantity))
 }
