@@ -39,6 +39,21 @@ export default async function CartPage({ searchParams }: CartPageProps) {
   return (
     <main className="app-shell">
       <AppHeader />
+      <section className="shop-hero">
+        <div className="metric-card">
+          <p className="shop-kicker">Cart</p>
+          <h2 className="shop-display" style={{ fontSize: 44 }}>管理购物车商品、勾选状态与最终订单金额。</h2>
+          <p className="shop-meta">你可以删除商品、切换勾选状态，并直接提交真实订单。</p>
+        </div>
+        <CartSummary
+          total={`¥${(total / 100).toFixed(2)}`}
+          action={
+            <form action={submitOrder}>
+              <PrimaryButton type="submit">提交订单</PrimaryButton>
+            </form>
+          }
+        />
+      </section>
       {params.error ? <section className="metric-card"><p style={{ color: "#a0382b" }}>{decodeURIComponent(params.error)}</p></section> : null}
       <section className="metric-card">
         <h2 className="section-title">购物车商品</h2>
@@ -69,14 +84,6 @@ export default async function CartPage({ searchParams }: CartPageProps) {
           </tbody>
         </table>
       </section>
-      <CartSummary
-        total={`¥${(total / 100).toFixed(2)}`}
-        action={
-          <form action={submitOrder}>
-            <PrimaryButton type="submit">提交订单</PrimaryButton>
-          </form>
-        }
-      />
     </main>
   );
 }
