@@ -386,3 +386,32 @@
 - 重新执行：
   - `bash scripts/start.sh`
   - `bash scripts/demo.sh`
+
+
+## 前台真实联调：Task 1 商品列表
+
+### 已完成内容
+- 已新增：`frontend/lib/adapters/httpAdapter.ts`
+- 已更新：
+  - `frontend/app/shop/page.tsx`
+  - `internal/product/repo.go`
+  - `internal/product/service.go`
+  - `internal/product/handler.go`
+  - `internal/product/mysql_repo.go`
+  - `internal/product/mysql_repo_test.go`
+  - `cmd/product-service/router.go`
+  - `cmd/product-service/router_test.go`
+  - `README.md`
+
+### 当前实现结果
+- `product-service` 已支持：
+  - `GET /products`
+  - `GET /products/:id`
+- `/shop` 页面已从 mock 数据切到真实后端商品列表接口。
+
+### 当前验证结果
+- 已执行：`go test ./internal/product && go test ./cmd/product-service`
+- 结果：通过
+- 已执行：`bash scripts/run-all.sh`
+- 已执行：`curl -I http://127.0.0.1:3000/shop`
+- 结果：`200 OK`

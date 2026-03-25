@@ -12,6 +12,7 @@ func newRouter(handler product.Handler) *gin.Engine {
 	router.GET("/health", func(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, gin.H{"service": "product-service", "status": "ok"})
 	})
+	router.GET("/products", handler.List)
 	router.GET("/products/:id", handler.GetByID)
 
 	return router

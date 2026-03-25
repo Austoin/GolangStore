@@ -30,3 +30,7 @@ func (h Handler) GetByID(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, item)
 }
+
+func (h Handler) List(ctx *gin.Context) {
+	ctx.JSON(http.StatusOK, h.service.ListProducts())
+}

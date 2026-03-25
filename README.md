@@ -53,6 +53,7 @@
 - `frontend/app/shop` 四个前台页面骨架已完成
 - `frontend/app/admin` 四个后台页面骨架已完成
 - `frontend/lib/adapters` 与 `frontend/lib/mock` 已建立，前台页面已切到 adapter 数据层
+- `/shop` 商品列表页已切到真实后端接口 `GET /products`
 
 详细过程见：
 

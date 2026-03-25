@@ -1,9 +1,9 @@
 import { AppHeader } from "../../components/shared/AppHeader";
 import { ProductCard } from "../../components/shop/ProductCard";
-import { listProducts } from "../../lib/adapters";
+import { listProductsHttp } from "../../lib/adapters/httpAdapter";
 
-export default function ShopPage() {
-  const products = listProducts();
+export default async function ShopPage() {
+  const products = await listProductsHttp();
 
   return (
     <main className="app-shell">

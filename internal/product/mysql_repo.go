@@ -57,3 +57,23 @@ func (r MySQLRepository) HasEnough(productID uint64, quantity int) bool {
 func (r MySQLRepository) Deduct(productID uint64, quantity int) {
 	r.db.Table("product_stocks").Where("product_id = ?", productID).Update("stock", gorm.Expr("stock - ?", quantity))
 }
+
+func (r MySQLRepository) List() []Product {
+	rows := make([]productRow, 0)
+	r.db.Table("products").Find(&rows)
+	items := make([]Product, 0, len(rows))
+	for _, row := range rows {
+		var stock stockRow
+		r.db.Table("product_stocks").Where("product_id = ?", row.ID).First(&stock)
+		items = append(items, Product{
+			ID: row.ID,
+			Name: row.Name,
+			Description: row.Description,
+			Price: row.Price,
+			Status: row.Status,
+			Stock: stock.Stock,
+		})
+	}
+
+	return items
+}
