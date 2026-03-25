@@ -274,6 +274,25 @@
 - 后台四页路由骨架已完成。
 - Dashboard、商品管理、库存面板、订单管理都已有页面占位。
 
+## 前端实现：Task 5 mock adapter 层
+
+### 已完成内容
+- 已创建：
+  - `frontend/lib/types/index.ts`
+  - `frontend/lib/mock/data.ts`
+  - `frontend/lib/adapters/mockAdapter.ts`
+  - `frontend/lib/adapters/index.ts`
+- 已更新：
+  - `frontend/app/shop/page.tsx`
+  - `frontend/app/shop/products/[id]/page.tsx`
+  - `frontend/app/shop/cart/page.tsx`
+  - `frontend/app/shop/orders/page.tsx`
+
+### 当前结果
+- 前端页面已不再直接写死展示数据。
+- `/shop` 页面已通过 adapter 层读取 mock 数据。
+- 后续可替换为真实 HTTP adapter 而不改页面结构。
+
 ### Task 5：一键演示脚本（最新业务阻塞）
 - 修复 `start.sh` 后，三服务已能同时健康启动。
 - 重新执行 `bash scripts/demo.sh` 后，`POST /orders/from-cart` 仍返回 `400`。

@@ -52,6 +52,7 @@
 - `frontend/components/shared` 已建立共享设计系统基础组件
 - `frontend/app/shop` 四个前台页面骨架已完成
 - `frontend/app/admin` 四个后台页面骨架已完成
+- `frontend/lib/adapters` 与 `frontend/lib/mock` 已建立，前台页面已切到 adapter 数据层
 
 详细过程见：
 
