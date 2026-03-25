@@ -98,3 +98,7 @@ npm run dev
 - 两套入口：`/shop` 与 `/admin`
 - 当前通过 mock adapter 驱动页面
 - 后续可替换为真实 HTTP adapter
+- 已验证页面入口：
+  - `http://127.0.0.1:3000/`
+  - `http://127.0.0.1:3000/shop`
+  - `http://127.0.0.1:3000/admin`

@@ -306,6 +306,18 @@
   - `/shop` 与 `/admin` 双入口
   - mock adapter 模式
 
+### 当前运行验证结果
+- 已执行：`npm install`
+- 已执行：`npm run dev -- --hostname 0.0.0.0 --port 3000`
+- 已验证：
+  - `http://127.0.0.1:3000/` 返回 `200`
+  - `http://127.0.0.1:3000/shop` 返回 `200`
+  - `http://127.0.0.1:3000/admin` 返回 `200`
+
+### 当前阶段结论
+- 前端骨架、共享组件、前后台页面、mock adapter 已完成。
+- 前端当前已可运行并访问主要入口页面。
+
 ### Task 5：一键演示脚本（最新业务阻塞）
 - 修复 `start.sh` 后，三服务已能同时健康启动。
 - 重新执行 `bash scripts/demo.sh` 后，`POST /orders/from-cart` 仍返回 `400`。
