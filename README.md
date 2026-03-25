@@ -125,3 +125,5 @@ npm run dev
   - `http://127.0.0.1:3000/admin`
 - 已验证一键启动脚本：`bash scripts/run-all.sh`
 - `run-all.sh` 已增强启动期提示，可在前端预热阶段直接看到地址与等待进度
+
+- `/shop/products/[id]` 已切到真实商品详情接口 `GET /products/:id`

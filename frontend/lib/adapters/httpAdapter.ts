@@ -10,3 +10,12 @@ export async function listProductsHttp(): Promise<Product[]> {
 
   return response.json();
 }
+
+export async function getProductDetailHttp(id: number): Promise<Product> {
+  const response = await fetch(`${PRODUCT_BASE_URL}/products/${id}`, { cache: "no-store" });
+  if (!response.ok) {
+    throw new Error(`failed to get product detail: ${response.status}`);
+  }
+
+  return response.json();
+}

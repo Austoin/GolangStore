@@ -415,3 +415,19 @@
 - 已执行：`bash scripts/run-all.sh`
 - 已执行：`curl -I http://127.0.0.1:3000/shop`
 - 结果：`200 OK`
+
+
+## 前台真实联调：Task 2 商品详情
+
+### 已完成内容
+- 已更新：
+  - `frontend/lib/adapters/httpAdapter.ts`
+  - `frontend/app/shop/products/[id]/page.tsx`
+  - `README.md`
+
+### 当前实现结果
+- 商品详情页已从 mock 数据切到真实后端详情接口。
+- 当前使用真实路由参数 `id` 请求商品详情。
+
+### 当前验证结果
+- 待通过 `/shop/products/101` 页面访问验证。
